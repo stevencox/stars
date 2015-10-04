@@ -1,0 +1,142 @@
+#!/bin/bash
+
+set -e
+set -x
+
+if [ -z $STARS_HOME ]; then
+   echo STARS_HOME must be set.
+   exit 0
+fi
+
+PYTHONPATH=$PWD:$PYTHONPATH
+
+# -------------------- manage cluster resources -------------------------
+
+cluster () {
+    # config ~/.config/ezmomi/config.yaml
+    EZMOMI_HOME=/projects/stars/app/ezmomi
+    export PYTHONPATH=$EZMOMI_HOME:$PYTHONPATH
+    ezmomi=$EZMOMI_HOME/bin/ezmomi
+    
+    vcenter_host=vc.ad.renci.org
+    resource_pool="stars"
+    domain=edc.renci.org
+    template="Template CentOS 7 x86_64"
+
+    # Grep prefix (stars) name out of env specific config file
+    # and IP address range
+    # and resource pool name
+    # and template name
+    setup () {
+        for c in $(seq 0 10); do
+	    host=stars-t$c
+	    IP=x
+	    $ezmomi clone \
+                --template "$template" \
+                --hostname $host \
+                --ips $IP \
+                --domain $domain \
+                --resource-pool $resource_pool
+        done
+    }
+    teardown () {
+        for c in $(seq 0 10); do
+	    $ezmomi destroy --name stars-t$c.$domain
+        done
+    }
+    $*
+}
+
+provision () {
+    env=$1
+    cluster setup $env
+}
+
+release () {
+    env=$1
+    cluster teardown $env
+}
+
+# -------------------- manage installation -------------------------
+
+install () {
+    export app=$1
+    export env=$2
+    local target=$3
+    if [ ! -z "$target" ]; then
+	fab --fabfile=$STARS_HOME/app/stars/bin/fabfile.py $target
+    else
+	echo "Usage: stars install <app> <env> <target>"
+    fi
+}
+
+start () {
+    env=$1
+    fab services
+}
+
+stop () {
+    env=$1
+}
+
+status () {
+    env=$1
+}
+
+restart () {
+    env=$1
+    stop $env
+}
+
+uninstall () {
+    export app=$1
+    export env=$2
+    local target=$3
+    if [ ! -z "$target" ]; then
+	fab --fabfile=$STARS_HOME/app/stars/bin/fabfile.py $target:clean
+    else
+	echo "Usage: stars clean <app> <env> <target>"
+    fi
+}
+
+# ------------------- test -------------------------------------------
+
+test () {
+    env=$1
+    provision $env
+    install $env
+    start $env
+    stop $env
+    clean $env
+    release $env
+}
+
+$*
+
+
+
+
+f () {
+
+
+    stars install evry dev app astro
+
+    stars install episteme dev factorie
+
+    stars install episteme test factorie
+
+    stars start episteme dev
+
+    stars status episteme dev
+
+    stars restart episteme dev
+
+    stars status evry dev
+
+    stars restart evry dev
+
+    stars list
+
+
+    
+}
