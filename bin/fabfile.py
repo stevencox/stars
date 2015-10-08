@@ -36,13 +36,14 @@ import stars_util as su
 from importlib import import_module
 
 from fabric.state import output
+output['warnings'] = False
 output['status'] = False
 output['running'] = False
 
 sys.path.append('.')
 sys.path.append (os.path.join (os.environ['STARS_HOME'], 'bin'))
 
-app = import_module ('stars_app')
+app = import_module (os.environ ['app'])
 env.user = app.env.user
 cluster_nodes   = su.concat ([ app.env.head_nodes, app.env.work_nodes, app.env.db_nodes ])
 
@@ -174,7 +175,6 @@ def mesos_21_install (mode):
                 run ('tar xzf %s/mesos-renci-0.21.0.tar.gz' % su.dist)
                 with cd ('mesos-0.21.0'):
                     sudo ('make install 2>&1 > mesos-install.log')
-        #sudo ('rm -rf %s/mesos/mesos-0.21.0/src/' % su.opt)
     def clean ():
         sudo ('rm -rf %/mesos' % su.opt)
     return su.execute_op (mode, install, clean)
@@ -438,3 +438,9 @@ def all (mode="install"):
 def status ():
     run ('free -h')
     run ('vmstat')
+    app.status ()
+
+@task
+@hosts(app.env.head_nodes[0])
+def backup ():
+    run ('%s/evry/bin/backup backup' % su.app)

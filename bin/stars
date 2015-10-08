@@ -3,7 +3,11 @@
 set -e
 set -x
 
-if [ -z $STARS_HOME ]; then
+#source /projects/stars/app/evry/conf/env.sh
+
+#echo $STARS_HOME
+
+if [ -z "$STARS_HOME" ]; then
    echo STARS_HOME must be set.
    exit 0
 fi

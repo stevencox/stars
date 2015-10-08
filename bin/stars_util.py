@@ -34,7 +34,7 @@ from importlib import import_module
 root = os.environ ['STARS_HOME']
 
 if not os.path.isdir (root):
-    raise ValueError ("STARS_HOME must be set to the root directory of the stars installation")
+    raise ValueError ("STARS_HOME must be set to the root directory of the stars installation. value[%s]" % root)
 
 app = '%s/app' % root
 stack = '%s/stack' % root
