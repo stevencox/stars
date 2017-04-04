@@ -1,0 +1,15 @@
+---
+# file: masters.yml
+- hosts: masters
+  user: evryscope  
+  become: true  
+  become_user: root  
+  roles:
+    - { role: common,    tags: "common" }
+    - { role: zookeeper, tags: "zookeeper" }
+    - { role: mesos,     tags: "mesos" }
+    - { role: marathon,  tags: "marathon" }
+#    - { role: mesos-dns-server, user: evryscope, become: false }
+    - { role: chronos,   tags: "chronos" }
+    - { role: spark,     tags: "spark" }
+    - { role: zeppelin,  zeppelin_server_port: 8081, tags: "zeppelin" }

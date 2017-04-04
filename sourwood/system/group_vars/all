@@ -1,0 +1,9 @@
+# here we assign variables to particular groups
+
+proxy_env:
+  http_proxy: http://gateway.ad.renci.org:8080/
+  https_proxy: http://gateway.ad.renci.org:8080/
+
+environment: "{{proxy_env}}"
+mesos_version: "1.0.1"
+spark_version: "2.1.0"

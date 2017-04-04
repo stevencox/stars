@@ -1,0 +1,17 @@
+# Main playbook.
+
+---
+- name: apply common configuration to all nodes
+  hosts:  all
+  user:   evryscope
+  become: true
+  become_user: root
+  roles:
+    - common
+    - docker
+    - { role: maven, maven_proxies: [ { host : gateway.ad.renci.org, port: 8080 } ] }
+#    - { role: jeffhung.java-se, java_variant: jre8 }
+
+- include: masters.yml
+- include: workers.yml
+- include: webservers.yml

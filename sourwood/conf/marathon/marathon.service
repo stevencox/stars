@@ -1,0 +1,15 @@
+[Unit]
+Description=Marathon
+After=network.target
+Wants=network.target
+ 
+[Service]
+ExecStart=/usr/bin/marathon \
+       --master zk://stars-dc0.edc.renci.org:2181,stars-dc1.edc.renci.org:2181,stars-dc2.edc.renci.org:2181/mesos \
+       --zk zk://stars-dc0.edc.renci.org:2181,stars-dc1.edc.renci.org:2181,stars-dc2.edc.renci.org:2181/marathon \
+       --event_subscriber http_callback --http_endpoints http://stars-dc0.edc.renci.org:3030/marathon
+Restart=always
+RestartSec=20
+ 
+[Install]
+WantedBy=multi-user.target

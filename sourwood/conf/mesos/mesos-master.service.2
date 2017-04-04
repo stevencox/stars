@@ -1,0 +1,21 @@
+# Ansible managed
+
+[Unit]
+Description=mesos master
+After=network.target
+Wants=network.target
+
+[Service]
+ExecStart=/usr/bin/sudo bash -c "/usr/sbin/mesos-master --zk=zk://stars-dc0:2181/mesos --ip=172.25.8.161 --cluster=mesos_cluster --log_dir=/var/log/mesos --work_dir=/home/cluster/mesos --quorum=1"
+Restart=always
+RestartSec=20
+TimeoutSec=300
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+

@@ -1,0 +1,189 @@
+chronos
++----------------------------------------------
++-  chronos                  
++----------------------------------------------
+ M tasks/RedHat.yml
+ M tasks/conf.yml
+tasks/RedHat.yml
+    diff --git a/tasks/RedHat.yml b/tasks/RedHat.yml
+    index 0b816be..3597038 100644
+    --- a/tasks/RedHat.yml
+    +++ b/tasks/RedHat.yml
+    @@ -1,5 +1,6 @@
+     ---
+     - name: Add mesosphere repo
+    +  environment: "{{proxy_env}}"
+       yum: name={{ mesosphere_repo }} state=present
+     
+     - name: Install Chronos
+tasks/conf.yml
+    diff --git a/tasks/conf.yml b/tasks/conf.yml
+    index fdf4a44..f0a7c60 100644
+    --- a/tasks/conf.yml
+    +++ b/tasks/conf.yml
+    @@ -60,7 +60,8 @@
+       copy:
+         dest: "{{ chronos_conf_path }}/{{ item.key }}"
+         content: "{{ item.value }}"
+    -  with_dict: chronos_conf_options
+    +#  with_dict: chronos_conf_options
+    +  with_dict: "{{ chronos_conf_options }}"
+       when: item.value != ""
+       sudo: yes
+       notify:
+    @@ -73,7 +74,8 @@
+         dest: "{{ chronos_sysconfig_path }}"
+         line: "{{ item.key }}={{ item.value }}"
+         create: yes
+    -  with_dict: chronos_sysconfig_vars
+    +#  with_dict: chronos_sysconfig_vars
+    +  with_dict: "{{ chronos_sysconfig_vars }}"
+       when: item.value != ""
+       sudo: yes
+       notify:
+docker
++----------------------------------------------
++-  docker                   
++----------------------------------------------
+ M tasks/main.yml
+tasks/main.yml
+    diff --git a/tasks/main.yml b/tasks/main.yml
+    index ef23ee9..6f30dc6 100644
+    --- a/tasks/main.yml
+    +++ b/tasks/main.yml
+    @@ -6,15 +6,19 @@
+     -   name: Install Pypi
+         easy_install: name=pip
+         tags: docker
+    +    environment: "{{proxy_env}}"
+     
+     -   name: Install docker-py
+         pip: name=docker-py
+         tags: docker
+    +    environment: "{{proxy_env}}"
+     
+     -   name: Install Docker
+         yum: name=docker state=latest
+         tags: docker
+    +    environment: "{{proxy_env}}"
+     
+     -   name: Make sure Docker is running
+         service: name=docker state=running
+         tags: docker
+    +    environment: "{{proxy_env}}"
+    \ No newline at end of file
+jeffhung.java-se
++----------------------------------------------
++-  jeffhung.java-se         
++----------------------------------------------
+jeffhung.localrepo
++----------------------------------------------
++-  jeffhung.localrepo       
++----------------------------------------------
+marathon
++----------------------------------------------
++-  marathon                 
++----------------------------------------------
+ M tasks/RedHat.yml
+tasks/RedHat.yml
+    diff --git a/tasks/RedHat.yml b/tasks/RedHat.yml
+    index 6b94be1..a07d0fd 100644
+    --- a/tasks/RedHat.yml
+    +++ b/tasks/RedHat.yml
+    @@ -1,7 +1,9 @@
+     ---
+     - name: Add mesosphere repo
+    +  environment: "{{proxy_env}}"
+       yum: name={{ mesosphere_yum_repo }} state=present
+     
+     - name: Install Marathon
+    +  environment: "{{proxy_env}}"
+       yum: name={{ marathon_yum_package }} state=present
+       notify: Restart marathon
+maven
++----------------------------------------------
++-  maven                    
++----------------------------------------------
+mesos
++----------------------------------------------
++-  mesos                    
++----------------------------------------------
+ M tasks/RedHat.yml
+tasks/RedHat.yml
+    diff --git a/tasks/RedHat.yml b/tasks/RedHat.yml
+    index c0ff860..759a5fe 100644
+    --- a/tasks/RedHat.yml
+    +++ b/tasks/RedHat.yml
+    @@ -1,11 +1,14 @@
+     ---
+     - name: Add mesosphere repo
+    +  environment: "{{proxy_env}}"
+       yum: name={{ mesosphere_yum_repo }} state=present
+     
+     - name: Downloading and enable the EPEL repository definitions.
+    +  environment: "{{proxy_env}}"
+       yum: name={{ epel_repo }} state=present
+     
+     - name: Install os packages
+    +  environment: "{{proxy_env}}"
+       yum: name={{item}} state=present
+       with_items:
+         - wget
+nginx
++----------------------------------------------
++-  nginx                    
++----------------------------------------------
+spark
++----------------------------------------------
++-  spark                    
++----------------------------------------------
+ M tasks/install.yml
+tasks/install.yml
+    diff --git a/tasks/install.yml b/tasks/install.yml
+    index 1b92b12..507d447 100644
+    --- a/tasks/install.yml
+    +++ b/tasks/install.yml
+    @@ -15,6 +15,7 @@
+       file: path={{ spark_cache_dir }} state=directory
+     
+     - name: Download spark binary tarball
+    +  environment: "{{proxy_env}}"
+       get_url:
+         url: "{{ spark_url_base }}/spark-{{ spark_version }}/{{ spark_bundle_name }}.tgz"
+         dest: "{{ spark_cache_dir }}/{{ spark_bundle_name }}.tgz"
+zeppelin
++----------------------------------------------
++-  zeppelin                 
++----------------------------------------------
+ M tasks/main.yml
+tasks/main.yml
+    diff --git a/tasks/main.yml b/tasks/main.yml
+    index e3d8fa8..c5999c9 100644
+    --- a/tasks/main.yml
+    +++ b/tasks/main.yml
+    @@ -65,6 +65,7 @@
+       register: zeppelin_install_path
+     
+     - name: Download Zeppelin
+    +  environment: "{{proxy_env}}"
+       get_url:
+         url: "{{ zeppelin_download_url }}"
+         dest: "/tmp/zeppelin-{{ zeppelin_version }}.tgz"
+zookeeper
++----------------------------------------------
++-  zookeeper                
++----------------------------------------------
+ M tasks/tarball.yml
+tasks/tarball.yml
+    diff --git a/tasks/tarball.yml b/tasks/tarball.yml
+    index 2607f0b..c98d781 100644
+    --- a/tasks/tarball.yml
+    +++ b/tasks/tarball.yml
+    @@ -6,6 +6,7 @@
+       file: path={{zookeeper_dir}} state=directory
+     
+     - name: Download zookeeper version.
+    +  environment: "{{proxy_env}}"
+       get_url: url={{zookeeper_url}} dest={{zookeeper_tarball_dir}}/zookeeper-{{zookeeper_version}}.tar.gz
+       tags: bootstrap
+     

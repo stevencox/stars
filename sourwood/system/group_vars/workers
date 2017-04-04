@@ -1,0 +1,3 @@
+# here we assign variables to particular groups
+
+mesos_install_mode: "slave" # {master|slave|master-slave}

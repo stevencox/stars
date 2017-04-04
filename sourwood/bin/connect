@@ -1,0 +1,87 @@
+#!/bin/bash
+
+stars_root=$PWD
+
+masters="
+stars-dc0.edc.renci.org
+stars-dc1.edc.renci.org
+stars-dc2.edc.renci.org
+"
+
+workers="
+stars-dw0.edc.renci.org
+stars-dw1.edc.renci.org
+stars-dw2.edc.renci.org
+stars-dw3.edc.renci.org
+"
+conf_group () {
+    local env=$1
+    local group=$2
+    ansible-playbook $group.yml -i $env --limit $group
+}
+
+config_zk () {
+    i=1
+    for z in $masters; do
+	ssh $z "sudo rm -rf /var/lib/zookeeper/*"
+	ssh $z "sudo su - zookeeper -c \"echo $i > /var/lib/zookeeper/myid \" "
+	ssh $z "sudo ls -lisa /var/lib/zookeeper/myid"
+	ssh $z "sudo cat /var/lib/zookeeper/myid"
+	
+	scp $stars_root/conf/zookeeper/zoo.cfg $z:/home/$USER
+	ssh $z "sudo cp zoo.cfg /opt/zookeeper-3.4.6/conf/zoo.cfg"
+	ssh $z "sudo chown zookeeper opt/zookeeper-3.4.6/conf/zoo.cfg"
+	ssh $z "sudo cat /opt/zookeeper-3.4.6/conf/zoo.cfg"
+	i=$(( i + 1 ))
+    done
+}
+config_mesos_masters () {
+    i=0
+    for z in $masters; do
+	scp $stars_root/conf/mesos/mesos-master.service.$i $z:/home/$USER
+	ssh $z "sudo cp /home/$USER/mesos-master.service.$i /usr/lib/systemd/system/mesos-master.service"
+	ssh $z "sudo systemctl daemon-reload"
+	ssh $z "systemctl status mesos-master.service"
+	
+	scp $stars_root/conf/marathon/marathon.service $z:/home/$USER
+	ssh $z "sudo cp /home/$USER/marathon.service /usr/lib/systemd/system/marathon.service"
+	ssh $z "sudo systemctl daemon-reload"
+	ssh $z "systemctl status marathon.service"
+
+	ssh $z "sudo service iptables stop"
+	ssh $z "sudo service iptables status"
+	ssh $z "sudo systemctl disable iptables"
+	i=$(( i + 1 ))
+    done
+    cd $stars_root/system
+    ansible masters --become -i production -a "sudo service mesos-master restart"
+    ansible masters --become -i production -a "sudo service mesos-master status"
+    ansible masters --become -i production -a "sudo service marathon restart"
+    ansible masters --become -i production -a "sudo service marathon status"
+}
+config_mesos_workers () {
+    for z in $workers; do
+	scp $stars_root/conf/mesos/mesos-slave.service $z:/home/$USER
+	ssh $z "sudo cp /home/$USER/mesos-slave.service /usr/lib/systemd/system/"
+	ssh $z "sudo systemctl daemon-reload"
+	ssh $z "sudo service mesos-slave restart"
+	ssh $z "sudo service mesos-slave status"
+	ssh $z "sudo service iptables stop"
+	ssh $z "sudo service iptables status"
+	ssh $z "sudo systemctl disable iptables"
+    done
+    cd $stars_root/system
+    ansible workers --become -i production -a "sudo service mesos-slave restart"
+}
+
+config_python () {
+    for z in $workers $masters; do
+	ssh $z "sudo yum install -y python34"
+	ssh $z "which python3"
+    done
+}
+
+config_zk
+config_mesos_masters
+config_mesos_workers
+config_python
