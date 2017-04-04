@@ -48,7 +48,7 @@ The bin directory contains scripts to:
 
 ## Running
 
-1. There are a few roles that are in the Sourwood repository itself. They include the common role and, currently, the mesos-dns roles. Others are assembled from external GitHub repos by the clone-roels script.
+1. **Clone Roles** There are a few roles that are in the Sourwood repository itself. They include the common role and, currently, the mesos-dns roles. Others are assembled from external GitHub repos by the clone-roels script.
 To clone github repositories containing ansible roles we depend on, execute:
 
 ```
@@ -93,6 +93,24 @@ When that's done, you should have a directory structure like this:
     ├── webservers.yml
     ├── workers.yml
     └── zookeeper.yml
+```
+2. **Masters**: Run the Ansible playbook to install and configure masters:
+```
+ansible-playbook masters.yml -i production --limit masters
+```
 
+3. **Workers**: Configure Mesos workers
+```
+ansible-playbook workers.yml -i production --limit workers
+```
+
+4. **Webservers**: Configure webservers
+```
+ansible-playbook webservers.yml -i production --limit webservers
+```
+
+5. **Connect**: Until we integrate these changes into Ansible roles, we run a script that configures a few specific things:
+```
+bin/connect
 ```
 
