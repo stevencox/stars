@@ -5,6 +5,8 @@ set -e
 
 cd system
 
+# fork from clone: https://gist.github.com/jagregory/710671
+
 # common
 [ ! -d roles/docker ] && git clone git@github.com:stevencox/ansible-docker.git roles/docker
 [ ! -d roles/maven ]  && git clone git@github.com:jdauphant/ansible-role-maven.git roles/maven
@@ -24,6 +26,5 @@ cd system
 # web
 # https://github.com/jdauphant/ansible-role-nginx
 [ ! -d roles/nginx ] && git clone git@github.com:jdauphant/ansible-role-nginx.git roles/nginx
-
 
 # https://www.ansible.com/blog/managing-vmware-guests
