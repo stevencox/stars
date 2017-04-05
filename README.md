@@ -1,6 +1,8 @@
 # Stars
 Stars automates the installation and configuration of the software stack needed to run big data applications on the Berkeley Data Analytics Stack (BDAS)
 
+**Current Status**: Installs Java, Python, Maven, Docker, Zookeeper, Mesos, Marathon, and Chronos to a cluster. We still haven't settled on an orchestration approach so it's not ready for prime time. But Marathon can now pull, run, and scale docker images on Mesos.
+
 It installs common compiler and interpreter infrastructure including:
 - Java
 - Maven
