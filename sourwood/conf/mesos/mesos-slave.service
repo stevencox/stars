@@ -6,7 +6,7 @@ Wants=network.target
 [Service]
 ExecStart=/usr/sbin/mesos-slave --master=zk://stars-dc0.edc.renci.org:2181/mesos \
                                 --log_dir=/var/log/mesos \
-                                --work_dir=/scratch/stars2/mesos \
+				--work_dir=/home/cluster/mesos \
 				--containerizers=docker,mesos \
 				--executor_registration_timeout=5mins
 KillMode=process

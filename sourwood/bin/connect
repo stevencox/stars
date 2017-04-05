@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+#set -e
 
 stars_root=$PWD
 
@@ -73,15 +73,10 @@ config_service () {
 }
 config_mesos_workers () {
     for z in $workers; do
-
+	echo configuring $z
 	config_service $z mesos mesos-slave
 #	config_service $z docker docker
-
-#	scp $stars_root/conf/mesos/mesos-slave.service $z:/home/$USER
-#	ssh $z "sudo cp /home/$USER/mesos-slave.service /usr/lib/systemd/system/"
-#	ssh $z "sudo systemctl daemon-reload"
-#	ssh $z "sudo service mesos-slave restart"
-#	ssh $z "sudo service mesos-slave status"
+#--work_dir=/home/cluster/mesos
 	ssh $z "sudo service iptables stop"
 	ssh $z "sudo service iptables status"
 	ssh $z "sudo systemctl disable iptables"
@@ -89,6 +84,8 @@ config_mesos_workers () {
     cd $stars_root/system
     ansible workers --become -i production -a "sudo service mesos-slave restart"
 }
+
+# zeppelin: sudo chown -R zeppelin /opt/zeppelin-0.7.0-bin-all/
 
 config_python () {
     for z in $workers $masters; do
