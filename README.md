@@ -17,7 +17,7 @@ It then installs distributed computing cluster infrastructure:
 The installation and configuration is automated with Ansible.
 
 ## Tools
-The Stars Sourwood environment is a set of scripts for
+The Stars cluster module contains scripts for
 - Assembling required Ansible roles
 - Executing those roles
 - Currently, we have to run some additional, non-Ansible configuration
@@ -48,7 +48,7 @@ The bin directory contains scripts to:
 
 ## Running
 
-1. **Clone Roles** There are a few roles that are in the Sourwood repository itself. They include the common role and, currently, the mesos-dns roles. Others are assembled from external GitHub repos by the clone-roels script.
+1. **Clone Roles** There are a few roles that are in the cluster module itself. They include the common role and, currently, the mesos-dns roles. Others are assembled from external GitHub repos by the clone-roels script.
 To clone github repositories containing ansible roles we depend on, execute:
 
 ```
