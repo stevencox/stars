@@ -1,0 +1,17 @@
+[Unit]
+Description=Marathon Orchestration
+After=network.target
+Wants=network.target
+
+[Service]
+Environment="ORCH_HOME=/opt/app/orchestration"
+ExecStart=/opt/app/orchestration/bin/orch.sh run dev --pidfile ${ORCH_HOME}/pid --config ${ORCH_HOME}/etc/local_config.json
+User=evryscope
+WorkingDirectory=${ORCH_HOME}
+Type=forking
+PIDFile=${ORCH_HOME}/pid
+Restart=always
+RestartSec=20
+
+[Install]
+WantedBy=reboot.target shutdown.target halt.target

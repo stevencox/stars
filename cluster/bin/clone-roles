@@ -8,20 +8,22 @@ cd system
 # fork from clone: https://gist.github.com/jagregory/710671
 
 # common
-[ ! -d roles/docker ] && git clone git@github.com:stevencox/ansible-docker.git roles/docker
-[ ! -d roles/maven ]  && git clone git@github.com:jdauphant/ansible-role-maven.git roles/maven
+[ ! -d roles/docker  ] && git clone git@github.com:stevencox/ansible-docker.git roles/docker
+[ ! -d roles/maven   ] && git clone git@github.com:jdauphant/ansible-role-maven.git roles/maven
+#[ ! -d roles/haproxy ] && git clone git@github.com:Vinelab/ansible-haproxy.git roles/haproxy
+[ ! -d roles/haproxy ] && git clone git@github.com:geerlingguy/ansible-role-haproxy.git roles/haproxy
 
 # core
 [ ! -d roles/zookeeper ] && git clone git@github.com:stevencox/ansible-zookeeper.git roles/zookeeper
-[ ! -d roles/mesos ]     && git clone git@github.com:stevencox/ansible-mesos.git roles/mesos
-[ ! -d roles/marathon ]  && git clone git@github.com:stevencox/ansible-marathon.git roles/marathon
-[ ! -d roles/chronos ]   && git clone git@github.com:stevencox/ansible-chronos.git roles/chronos
+[ ! -d roles/mesos     ] && git clone git@github.com:stevencox/ansible-mesos.git roles/mesos
+[ ! -d roles/marathon  ] && git clone git@github.com:stevencox/ansible-marathon.git roles/marathon
+[ ! -d roles/chronos   ] && git clone git@github.com:stevencox/ansible-chronos.git roles/chronos
 
 # apps
-[ ! -d roles/jeffhung.java-se ]   && git clone git@github.com:jeffhung/ansible-java-se.git roles/jeffhung.java-se
+[ ! -d roles/jeffhung.java-se   ] && git clone git@github.com:jeffhung/ansible-java-se.git roles/jeffhung.java-se
 [ ! -d roles/jeffhung.localrepo ] && git clone git@github.com:jeffhung/ansible-localrepo.git roles/jeffhung.localrepo
-[ ! -d roles/spark ]              && git clone git@github.com:stevencox/ansible-spark.git roles/spark
-[ ! -d roles/zeppelin ]           && git clone git@github.com:stevencox/ansible-role-zeppelin.git roles/zeppelin
+[ ! -d roles/spark              ] && git clone git@github.com:stevencox/ansible-spark.git roles/spark
+[ ! -d roles/zeppelin           ] && git clone git@github.com:stevencox/ansible-role-zeppelin.git roles/zeppelin
 
 # web
 # https://github.com/jdauphant/ansible-role-nginx

@@ -1,4 +1,5 @@
 ---
+
 # file: masters.yml
 - hosts: masters
   user: evryscope  
@@ -8,6 +9,7 @@
     - { role: common,    tags: "common" }
     - { role: zookeeper, tags: "zookeeper" }
     - { role: mesos,     tags: "mesos" }
+    - { role: haproxy,   tags: "haproxy" }
     - { role: marathon,  tags: "marathon" }
 #    - { role: mesos-dns-server, user: evryscope, become: false }
     - { role: chronos,   tags: "chronos" }

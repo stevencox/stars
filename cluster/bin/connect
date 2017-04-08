@@ -40,19 +40,32 @@ config_zk () {
 config_mesos_masters () {
     i=0
     for z in $masters; do
+
 	scp $stars_root/conf/mesos/mesos-master.service.$i $z:/home/$USER
 	ssh $z "sudo cp /home/$USER/mesos-master.service.$i /usr/lib/systemd/system/mesos-master.service"
 	ssh $z "sudo systemctl daemon-reload"
 	ssh $z "systemctl status mesos-master.service"
 	
-	scp $stars_root/conf/marathon/marathon.service $z:/home/$USER
-	ssh $z "sudo cp /home/$USER/marathon.service /usr/lib/systemd/system/marathon.service"
-	ssh $z "sudo systemctl daemon-reload"
-	ssh $z "systemctl status marathon.service"
+#	scp $stars_root/conf/marathon/marathon.service $z:/home/$USER
+#	ssh $z "sudo cp /home/$USER/marathon.service /usr/lib/systemd/system/marathon.service"
+#	ssh $z "sudo systemctl daemon-reload"
+#	ssh $z "systemctl status marathon.service"
+	config_service $z marathon marathon
 
-	ssh $z "sudo service iptables stop"
-	ssh $z "sudo service iptables status"
-	ssh $z "sudo systemctl disable iptables"
+	ssh $z "sudo touch /etc/haproxy/haproxy.auto.cfg"
+	ssh $z "sudo chown $USER /etc/haproxy/haproxy.auto.cfg"
+	ssh $z "sudo mkdir -p /var/log/orchestration"
+	ssh $z "sudo chown $USER /var/log/orchestration"
+	ssh $z "sudo mkdir -p /opt/app"
+	ssh $z "sudo chown $USER /opt/app"
+	ssh $z "sudo rm -rf /opt/app/orchestration"
+	ssh $z "git clone https://github.com/stevencox/orchestration.git /opt/app/orchestration"
+	scp $stars_root/conf/orchestration/local_config.json $z:/opt/app/orchestration/etc
+	config_service $z orchestration orchestration
+
+#	ssh $z "sudo service iptables stop"
+#	ssh $z "sudo service iptables status"
+#	ssh $z "sudo systemctl disable iptables"
 	i=$(( i + 1 ))
     done
     cd $stars_root/system
@@ -60,6 +73,10 @@ config_mesos_masters () {
     ansible masters --become -i production -a "sudo service mesos-master status"
     ansible masters --become -i production -a "sudo service marathon restart"
     ansible masters --become -i production -a "sudo service marathon status"
+}
+ansh () {
+    group=$1
+    ansible $group --become -i production -a "$2"
 }
 config_service () {
     local host=$1
@@ -95,6 +112,6 @@ config_python () {
 }
 
 #config_zk
-#config_mesos_masters
-config_mesos_workers
+config_mesos_masters
+#config_mesos_workers
 #config_python

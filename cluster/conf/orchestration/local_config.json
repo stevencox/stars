@@ -1,0 +1,16 @@
+{
+    "marathon_hosts" : [
+        "stars-dc0.edc.renci.org:8080",
+        "stars-dc1.edc.renci.org:8080",
+        "stars-dc2.edc.renci.org:8080"
+    ],
+    "services" : {
+        "nginx" : {
+            "port"         : 80,
+            "backend_port" : 80
+        }
+    },
+    "config_destination": "/etc/haproxy/haproxy.auto.cfg",
+    "users_config_destination": "/etc/haproxy/haproxy_users.cfg",
+    "pid_file": "/var/run/haproxy.pid"
+}
