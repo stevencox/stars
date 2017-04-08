@@ -37,8 +37,9 @@ mesos_additional_configs: []
   #   value: bar
 
 marathon_version: "1.4.2"
-spark_version: "2.1.0"
 
+spark_version: "2.1.0"
+spark_cache_dir: "/opt"
 
 haproxy_socket: /var/lib/haproxy/stats
 haproxy_chroot: /var/lib/haproxy
@@ -60,9 +61,4 @@ haproxy_backend_servers:
     address: 192.168.0.1:80
   - name: app2
     address: 192.168.0.2:80
-
-#haproxy_global_vars:
-#  - 'ssl-default-bind-ciphers ABCD+KLMJ:...'
-#  - 'ssl-default-bind-options no-sslv3'
-
 

@@ -13,5 +13,5 @@
     - { role: marathon,  tags: "marathon" }
 #    - { role: mesos-dns-server, user: evryscope, become: false }
     - { role: chronos,   tags: "chronos" }
-    - { role: spark,     tags: "spark" }
+    - { role: spark,     spark_version: "2.1.0", spark_cache_dir: "/opt", tags: "spark" }
     - { role: zeppelin,  zeppelin_server_port: 8081, tags: "zeppelin" }

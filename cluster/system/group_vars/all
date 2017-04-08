@@ -5,5 +5,12 @@ proxy_env:
   https_proxy: http://gateway.ad.renci.org:8080/
 
 environment: "{{ proxy_env }}"
+java_variant: "jdk8"
+java_edition: "jdk"
+java_version: "8"
+java_update: "112"
+java_build: "15"
+
+
 mesos_version: "1.0.1"
 

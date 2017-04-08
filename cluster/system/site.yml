@@ -10,7 +10,7 @@
     - common
     - docker
     - { role: maven, maven_proxies: [ { host : gateway.ad.renci.org, port: 8080 } ] }
-#    - { role: jeffhung.java-se, java_variant: jre8 }
+#    - { role: jeffhung.java-se, java_variant: jre8, tags: "java" }
 
 - include: masters.yml
 - include: workers.yml

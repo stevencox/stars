@@ -16,6 +16,8 @@ stars-dw1.edc.renci.org
 stars-dw2.edc.renci.org
 stars-dw3.edc.renci.org
 "
+group="service accounts"
+
 conf_group () {
     local env=$1
     local group=$2
@@ -37,38 +39,69 @@ config_zk () {
 	i=$(( i + 1 ))
     done
 }
+config_orchestration () {
+    z=$1
+    ssh $z "sudo touch /etc/haproxy/haproxy.auto.cfg"
+    ssh $z "sudo chown $USER /etc/haproxy/haproxy.auto.cfg"
+    ssh $z "sudo mkdir -p /var/log/orchestration"
+    ssh $z "sudo chown $USER /var/log/orchestration"
+    ssh $z "sudo mkdir -p /opt/app"
+    ssh $z "sudo chown $USER /opt/app"
+    ssh $z "sudo rm -rf /opt/app/orchestration"
+    ssh $z "git clone https://github.com/stevencox/orchestration.git /opt/app/orchestration"
+    scp $stars_root/conf/orchestration/local_config.json $z:/opt/app/orchestration/etc
+    config_service $z orchestration orchestration
+}
+config_iptables () {
+    z=$1
+    ssh $z "sudo service iptables stop"
+    ssh $z "sudo service iptables status"
+    ssh $z "sudo systemctl disable iptables"
+}
+config_spark () {
+    z=$1
+    ssh $z "sudo chown -R $USER /opt/spark*"
+    ssh $z "sudo chgrp -R \"$group\" /opt/spark*"
+    scp $stars_root/conf/spark/spark-env.sh $z:/opt/spark/conf
+    scp $stars_root/conf/spark/spark-defaults.conf.later $z:/opt/spark/conf/spark-defaults.conf
+}
+config_mesos () {
+    z=$1
+    i=$2
+    scp $stars_root/conf/mesos/mesos-master.service.$i $z:/home/$USER
+    ssh $z "sudo cp /home/$USER/mesos-master.service.$i /usr/lib/systemd/system/mesos-master.service"
+    ssh $z "sudo systemctl daemon-reload"
+    ssh $z "systemctl status mesos-master.service"
+}
 config_mesos_masters () {
     i=0
     for z in $masters; do
 
-	scp $stars_root/conf/mesos/mesos-master.service.$i $z:/home/$USER
-	ssh $z "sudo cp /home/$USER/mesos-master.service.$i /usr/lib/systemd/system/mesos-master.service"
-	ssh $z "sudo systemctl daemon-reload"
-	ssh $z "systemctl status mesos-master.service"
-	
-#	scp $stars_root/conf/marathon/marathon.service $z:/home/$USER
-#	ssh $z "sudo cp /home/$USER/marathon.service /usr/lib/systemd/system/marathon.service"
-#	ssh $z "sudo systemctl daemon-reload"
-#	ssh $z "systemctl status marathon.service"
-	config_service $z marathon marathon
+	# Mesos
+#	config_mesos $z $i
 
-	ssh $z "sudo touch /etc/haproxy/haproxy.auto.cfg"
-	ssh $z "sudo chown $USER /etc/haproxy/haproxy.auto.cfg"
-	ssh $z "sudo mkdir -p /var/log/orchestration"
-	ssh $z "sudo chown $USER /var/log/orchestration"
-	ssh $z "sudo mkdir -p /opt/app"
-	ssh $z "sudo chown $USER /opt/app"
-	ssh $z "sudo rm -rf /opt/app/orchestration"
-	ssh $z "git clone https://github.com/stevencox/orchestration.git /opt/app/orchestration"
-	scp $stars_root/conf/orchestration/local_config.json $z:/opt/app/orchestration/etc
-	config_service $z orchestration orchestration
+	# Marathon
+#	config_service $z marathon marathon
 
-#	ssh $z "sudo service iptables stop"
-#	ssh $z "sudo service iptables status"
-#	ssh $z "sudo systemctl disable iptables"
+	# Orchestration
+#	config_orchestration $z
+
+	# Spark
+	config_spark $z
+
+	# Zookeeper
+	config_zk
+
+#	config_iptables $z
+
 	i=$(( i + 1 ))
     done
+    restart_masters
+}
+restart_masters () {
     cd $stars_root/system
+    ansible masters --become -i production -a "sudo service zookeeper restart"
+    ansible masters --become -i production -a "sudo service zookeeper status"
     ansible masters --become -i production -a "sudo service mesos-master restart"
     ansible masters --become -i production -a "sudo service mesos-master status"
     ansible masters --become -i production -a "sudo service marathon restart"
@@ -111,7 +144,6 @@ config_python () {
     done
 }
 
-#config_zk
 config_mesos_masters
 #config_mesos_workers
 #config_python
