@@ -73,26 +73,37 @@ config_mesos () {
     ssh $z "sudo systemctl daemon-reload"
     ssh $z "systemctl status mesos-master.service"
 }
+config_zeppelin () {
+    scp /projects/stars/stack/v2/zeppelin/conf/zeppelin-env.sh /opt/zeppelin/conf
+    scp /projects/stars/stack/v2/zeppelin/conf/shiro.ini /opt/zeppelin/conf
+    ssh $z "sudo systemctl daemon-reload"
+    ssh $z "systemctl status mesos-master.service"
+    ssh $z "sudo chown -R zeppelin /opt/zeppelin"
+}
 config_mesos_masters () {
     i=0
     for z in $masters; do
 
+	# Zookeeper
+	config_zk
+
 	# Mesos
-#	config_mesos $z $i
+	config_mesos $z $i
 
 	# Marathon
-#	config_service $z marathon marathon
+	config_service $z marathon marathon
 
 	# Orchestration
-#	config_orchestration $z
+	config_orchestration $z
 
 	# Spark
 	config_spark $z
 
-	# Zookeeper
-	config_zk
+	# Iptables
+	config_iptables $z
 
-#	config_iptables $z
+	# Zeppelin
+	config_zeppelin $z
 
 	i=$(( i + 1 ))
     done
@@ -100,12 +111,27 @@ config_mesos_masters () {
 }
 restart_masters () {
     cd $stars_root/system
+    set -x
+    restart masters zookeeper
+    restart masters mesos-master
+    restart masters marathon
+    restart masters zeppelin
+    set +x
+    f () {
     ansible masters --become -i production -a "sudo service zookeeper restart"
     ansible masters --become -i production -a "sudo service zookeeper status"
     ansible masters --become -i production -a "sudo service mesos-master restart"
     ansible masters --become -i production -a "sudo service mesos-master status"
     ansible masters --become -i production -a "sudo service marathon restart"
     ansible masters --become -i production -a "sudo service marathon status"
+    ansible masters --become -i production -a "sudo service zeppelin restart"
+    ansible masters --become -i production -a "sudo service zeppelin status"
+    }
+}
+restart () {
+    group=$1
+    ansh $group "sudo service $2 restart"
+    ansh $group "sudo service $2 status"
 }
 ansh () {
     group=$1
@@ -135,7 +161,7 @@ config_mesos_workers () {
     ansible workers --become -i production -a "sudo service mesos-slave restart"
 }
 
-# zeppelin: sudo chown -R zeppelin /opt/zeppelin-0.7.0-bin-all/
+# zeppelin: 
 
 config_python () {
     for z in $workers $masters; do
@@ -144,6 +170,7 @@ config_python () {
     done
 }
 
-config_mesos_masters
+restart_masters
+#config_mesos_masters
 #config_mesos_workers
 #config_python
