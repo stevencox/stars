@@ -8,6 +8,10 @@
         "nginx" : {
             "port"         : 80,
             "backend_port" : 80
+        },
+        "zeppelin" : {
+            "port"         : 8081,
+            "backend_port" : 8081
         }
     },
     "config_destination": "/etc/haproxy/haproxy.auto.cfg",

@@ -62,3 +62,5 @@ haproxy_backend_servers:
   - name: app2
     address: 192.168.0.2:80
 
+zeppelin_service_username: evryscope
+zeppelin_service_group: "service accounts"

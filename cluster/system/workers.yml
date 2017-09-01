@@ -7,4 +7,4 @@
   roles:
     - common
     - { role: mesos, tags="mesos" }
-    - { role: spark, spark_version: "2.1.0", spark_cache_dir: "/opt", tags: "spark" }
+    - { role: spark, spark_version: "2.2.0", spark_cache_dir: "/opt", tags: "spark" }
