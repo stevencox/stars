@@ -5,4 +5,4 @@ python:
 # command to install dependencies
 install: "pip install ansible==2.2.0.0"
 # command to run tests
-script: "bin/clone-roles; cd cluster/system; ansible-playbook site.yml --check" 
+script: "cd stars/cluster; bin/clone-roles; cd cluster/system; ansible-playbook site.yml --check" 
