@@ -1,0 +1,5 @@
+---
+
+zeppelin_home_root: "/opt"
+zeppelin_home_dir: "{{ zeppelin_home_root }}/zeppelin"
+renci_ad_password: "---------------------"

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+export ZEPPELIN_NOTEBOOK_STORAGE=/projects/stars/app/greendatatranslator/blackboard/notebook/
+export ZEPPELIN_NOTEBOOK_DIR=/projects/stars/app/greendatatranslator/blackboard/notebook/
+export ZEPPELIN_PORT=8081
+export SPARK_HOME=/opt/spark
+export SPARK_SUBMIT_OPTIONS="--packages com.databricks:spark-csv_2.10:1.4.0 --conf spark.sql.warehouse.dir=/tmp --conf hive.metastore.warehouse.dir=/tmp --conf spark.pyspark.python=/projects/stars/venv/bin/python --driver-memory 5G"
+source $SPARK_HOME/conf/spark-env.sh
+export PYSPARK_PYTHON=/projects/stars/venv3/bin/python
+export PATH=/projects/stars/venv3/bin:$PATH
+export ZEPPELIN_MEM="-Xms3G -Xmx3G -XX:MaxPermSize=2g"

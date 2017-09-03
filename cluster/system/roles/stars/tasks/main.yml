@@ -1,0 +1,12 @@
+---
+
+- file:
+    path: "{{ zeppelin_home_dir }}/conf"
+    state: directory
+    owner: "{{ ansible_user }}"
+    
+- name: Create zeppelin environment file
+  template: src=zeppelin-env.sh.j2 dest={{ zeppelin_home_dir }}/conf/zeppelin-env.sh
+
+- name: Create zeppelin security file
+  template: src=shiro.ini.j2 dest={{ zeppelin_home_dir }}/conf/shiro.ini
