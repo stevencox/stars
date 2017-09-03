@@ -58,19 +58,18 @@ config_iptables () {
     ssh $z "sudo systemctl disable iptables"
 }
 config_spark () {
-    z=$1
-    
+    z=$1    
     ssh $z "sudo chown -R $USER /opt/spark*"
     ssh $z "sudo chgrp -R \"$group\" /opt/spark*"
-    scp $stars_root/conf/spark/spark-env.sh $z:/opt/spark/conf
-    scp $stars_root/conf/spark/spark-defaults.conf.later $z:/opt/spark/conf/spark-defaults.conf
+#    scp $stars_root/conf/spark/spark-env.sh $z:/opt/spark/conf
+#    scp $stars_root/conf/spark/spark-defaults.conf.later $z:/opt/spark/conf/spark-defaults.conf
 }
 config_mesos () {
     z=$1
     i=$2
-    scp $stars_root/conf/mesos/mesos-master.service.$i $z:/home/$USER
-    ssh $z "sudo cp /home/$USER/mesos-master.service.$i /usr/lib/systemd/system/mesos-master.service"
-    ssh $z "sudo systemctl daemon-reload"
+#    scp $stars_root/conf/mesos/mesos-master.service.$i $z:/home/$USER
+#    ssh $z "sudo cp /home/$USER/mesos-master.service.$i /usr/lib/systemd/system/mesos-master.service"
+#    ssh $z "sudo systemctl daemon-reload"
 #    ssh $z "systemctl status mesos-master.service"
 }
 config_zeppelin () {
@@ -136,15 +135,15 @@ config_service () {
 config_workers () {
     for z in $workers; do
 	echo configuring $z
-	config_service $z mesos mesos-slave
-	config_service $z docker docker
+#	config_service $z mesos mesos-slave
+#	config_service $z docker docker
 	ssh $z "sudo service iptables stop"
 #	ssh $z "sudo service iptables status"
 	ssh $z "sudo systemctl disable iptables"
 	ssh $z "rm -f /home/cluster/mesos/meta/slaves/latest"
     done
-    cd $stars_root/system
-    ansible workers --become -i production -a "sudo service mesos-slave restart"
+#    cd $stars_root/system
+#    ansible workers --become -i production -a "sudo service mesos-slave restart"
 }
 config_python () {
     for z in $workers $masters; do

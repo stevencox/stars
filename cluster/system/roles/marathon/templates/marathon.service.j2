@@ -1,0 +1,16 @@
+[Unit]
+Description=Marathon
+After=network.target
+Wants=network.target
+ 
+[Service]
+ExecStart=/usr/bin/marathon \
+       --master {{ mesos_zookeeper_masters }} \
+       --zk {{ mesos_zookeeper_masters | regex_replace('mesos', 'marathon') }} \
+       --event_subscriber http_callback \
+       --http_endpoints http://{{ inventory_hostname }}:3030/marathon
+Restart=always
+RestartSec=20
+ 
+[Install]
+WantedBy=multi-user.target
