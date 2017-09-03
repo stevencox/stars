@@ -2,20 +2,22 @@
 
 # file: masters.yml
 - hosts: masters
-  user: evryscope  
-  become: true  
-  become_user: root  
+  user: evryscope
+  become: true
+  become_user: root
   roles:
     - { role: common,    tags: "common" }
     - { role: zookeeper, tags: "zookeeper" }
-    - { role: mesos,     mesos_version: "1.2.1", tags: "mesos" }
-    - { role: haproxy,   tags: "haproxy" }
+#    - { role: mesos,     mesos_version: "1.3.0", tags: "mesos" }
+#    - { role: mesos,     stars: true, mesos_cluster_name: "RENCI_Stars", tags: "mesos" }
+    - { role: mesos,     tags: "mesos" }
+#    - { role: haproxy,   tags: "haproxy" }
     - { role: marathon,  tags: "marathon" }
-#    - { role: mesos-dns-server, user: evryscope, become: false }
-    - { role: chronos,   tags: "chronos" }
-    - { role: spark,     spark_version: "2.2.0", spark_cache_dir: "/opt", tags: "spark" }
-    - { role: zeppelin,  zeppelin_version: "0.7.2",
-                         zeppelin_server_port: 8081, zeppelin_service_username : "evryscope",
-                         zeppelin_service_group: 10000, tags: "zeppelin" }
-  environment:
-    http_proxy: http://gateway.ad.renci.org:8080/
+    - { role: mesos-dns, tags: "mesos-dns" }
+    - { role: spark,     spark_cache_dir: "/opt", tags: "spark" }
+#    - { role: spark,     spark_version: "2.2.0", spark_cache_dir: "/opt", tags: "spark" }
+
+#    - { role: chronos,   tags: "chronos" }
+#    - { role: zeppelin,  zeppelin_version: "0.7.2",
+#                         zeppelin_server_port: 8081, zeppelin_service_username : "evryscope",
+#                         zeppelin_service_group: 10000, tags: "zeppelin" }

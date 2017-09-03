@@ -1,6 +1,6 @@
 {
   "zk": "zk://stars-dc0.edc.renci.org:2181,stars-dc1.edc.renci.org:2181,stars-dc2.edc.renci.org:2181/mesos",
-  "masters": ["stars-dc0.edc.renci.org:5050", "stars-dc1.edc.renci.org:5050", "stars-dc2.edc.renci.org:5050"],
+  "masters": [ "stars-dc0.edc.renci.org:5050", "stars-dc1.edc.renci.org:5050", "stars-dc2.edc.renci.org:5050" ],
   "refreshSeconds": 60,
   "ttl": 60,
   "domain": "mesos",

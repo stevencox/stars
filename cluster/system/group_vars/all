@@ -1,10 +1,5 @@
 # here we assign variables to particular groups
 
-proxy_env:
-  http_proxy: http://gateway.ad.renci.org:8080/
-  https_proxy: http://gateway.ad.renci.org:8080/
-
-environment: "{{ proxy_env }}"
 java_variant: "jdk8"
 java_edition: "jdk"
 java_version: "8"
@@ -12,5 +7,8 @@ java_update: "112"
 java_build: "15"
 
 
-mesos_version: "1.0.1"
+mesos_version: "1.3.0"
+mesos_dns_ver: 'v0.6.0'
+spark_version: "2.2.0"
 
+stars: true

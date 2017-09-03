@@ -3,7 +3,7 @@
 mesos_install_mode: "master" # {master|slave|master-slave}
 
 # conf file settings
-mesos_cluster_name: "stars_cluster"
+mesos_cluster_name: "RENCI_Stars"
 mesos_ip: "{{ ansible_default_ipv4.address }}"
 mesos_hostname: "{{ ansible_hostname }}"
 mesos_master_port: "5050"
@@ -14,13 +14,15 @@ mesos_work_dir: "/home/cluster/mesos"
 mesos_quorum: "3"
 zookeeper_client_port: "2181"
 zookeeper_hostnames: "{{ mesos_hostname }}:{{ zookeeper_client_port }}"
-mesos_zookeeper_masters: "zk://{{ zookeeper_hostnames }}/mesos"
+#mesos_zookeeper_masters: "zk://{{ zookeeper_hostnames }}/mesos"
 mesos_owner: root
 mesos_group: root
+stars: true
 
 # Containerizer
 mesos_containerizers: "docker,mesos"
 mesos_executor_timeout: "5mins"
+mesos_zookeeper_masters: "zk://{{ groups['masters'] |join(':2181,') }}:2181/mesos"
 
 # SSL
 mesos_ssl_enabled: false
@@ -38,29 +40,6 @@ mesos_additional_configs: []
 
 marathon_version: "1.4.2"
 
-spark_version: "2.1.0"
+spark_version: "2.2.0"
 spark_cache_dir: "/opt"
 
-haproxy_socket: /var/lib/haproxy/stats
-haproxy_chroot: /var/lib/haproxy
-haproxy_user: haproxy
-haproxy_group: haproxy
-
-haproxy_frontend_name: 'hafrontend'
-haproxy_frontend_bind_address: '*'
-haproxy_frontend_port: 80
-haproxy_frontend_mode: 'http'
-
-haproxy_backend_name: 'habackend'
-haproxy_backend_mode: 'http'
-haproxy_backend_balance_method: 'roundrobin'
-haproxy_backend_httpchk: 'HEAD / HTTP/1.1\r\nHost:localhost'
-
-haproxy_backend_servers:
-  - name: app1
-    address: 192.168.0.1:80
-  - name: app2
-    address: 192.168.0.2:80
-
-zeppelin_service_username: evryscope
-zeppelin_service_group: "service accounts"

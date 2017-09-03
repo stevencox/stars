@@ -6,5 +6,5 @@
   become_user: root
   roles:
     - common
-    - { role: mesos, tags="mesos" }
-    - { role: spark, spark_version: "2.2.0", spark_cache_dir: "/opt", tags: "spark" }
+    - { role: mesos, tags: "mesos" }
+    - { role: spark, spark_cache_dir: "/opt", tags: "spark" }
