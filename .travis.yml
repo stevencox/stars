@@ -1,0 +1,8 @@
+
+language: python
+python:
+  - "3.6"
+# command to install dependencies
+install: "pip install ansible==2.2.0.0"
+# command to run tests
+script: "echo $PWD; cd cluster; bin/clone-roles; cd cluster/system; ansible-playbook site.yml --check" 
