@@ -1,0 +1,45 @@
+# here we assign variables to particular groups
+
+mesos_install_mode: "master" # {master|slave|master-slave}
+
+# conf file settings
+mesos_cluster_name: "RENCI_Stars"
+mesos_ip: "{{ ansible_default_ipv4.address }}"
+mesos_hostname: "{{ ansible_hostname }}"
+mesos_master_port: "5050"
+mesos_slave_port: "5051"
+mesos_log_location: "/var/log/mesos"
+mesos_ulimit: "-n 8192"
+mesos_work_dir: "/home/cluster/mesos"
+mesos_quorum: "3"
+zookeeper_client_port: "2181"
+zookeeper_hostnames: "{{ mesos_hostname }}:{{ zookeeper_client_port }}"
+mesos_owner: root
+mesos_group: root
+stars: true
+
+# Containerizer
+mesos_containerizers: "docker,mesos"
+mesos_executor_timeout: "5mins"
+mesos_zookeeper_masters: "zk://{{ groups['masters'] |join(':2181,') }}:2181/mesos"
+
+# SSL
+mesos_ssl_enabled: false
+mesos_ssl_support_downgrade: false
+mesos_ssl_key_file: # When SSL is enabled this must be used to point to the SSL key file
+mesos_ssl_cert_file: # When SSL is enabled this must be used to point to the SSL certificate file
+
+mesos_option_prefix: "MESOS_"
+
+# Additional configurations
+mesos_additional_configs: []
+  # For example:
+  # - name: FOO
+  #   value: bar
+
+#marathon_version: "1.4.2"
+marathon_version: "1.4.7"
+mesos_dns_ver: 'v0.6.0'
+spark_cache_dir: "/opt"
+spark_local_ip: "{{ ansible_default_ipv4.address }}"
+spark_python_virtual_env: "/projects/stars/venv3"

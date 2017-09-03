@@ -1,0 +1,19 @@
+# here we assign variables to particular groups
+
+java_variant: "jdk8"
+java_edition: "jdk"
+java_version: "8"
+java_update: "112"
+java_build: "15"
+
+
+mesos_version: "1.3.0"
+spark_version: "2.2.0"
+spark_cache_dir: "/opt"
+
+mesos_zookeeper_masters: "zk://{{ groups['masters'] |join(':2181,') }}:2181/mesos"
+mesos_masters: "mesos://{{ groups['masters'] |join(':2181,') }}:2181/mesos"
+stars: true
+
+renci_ad_password: "{{ vault_renci_ad_password }}"
+
