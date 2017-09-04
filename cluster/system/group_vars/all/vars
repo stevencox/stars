@@ -3,13 +3,13 @@
 java_variant: "jdk8"
 java_edition: "jdk"
 java_version: "8"
-java_update: "144"
+java_update: "112"
 java_build: "15"
 
 app_root: '/opt'
 tmp_root: '/tmp'
 
-mesos_version: "1.3.1"
+mesos_version: "1.3.0"
 spark_version: "2.1.1"
 
 spark_cache_dir: "/opt"
