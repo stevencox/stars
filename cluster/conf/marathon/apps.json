@@ -1,0 +1,255 @@
+{
+  "apps": [
+    {
+      "id": "/chronos",
+      "cmd": "sudo bash -c \"docker run --net=host -e PORT0=4400 -e PORT1=4401 mesosphere/chronos:v3.0.0 --zk_hosts=zk://stars-dc0.edc.renci.org:2181,stars-dc1.edc.renci.org:2181,stars-dc2.edc.renci.org:2181 --master=zk://stars-dc0.edc.renci.org:5050,stars-dc1.edc.renci.org:5050,stars-dc2.edc.renci.org:5050/mesos\"",
+      "args": null,
+      "user": null,
+      "env": {},
+      "instances": 1,
+      "cpus": 1,
+      "mem": 128,
+      "disk": 0,
+      "gpus": 0,
+      "executor": "",
+      "constraints": [],
+      "uris": [],
+      "fetch": [],
+      "storeUrls": [],
+      "backoffSeconds": 1,
+      "backoffFactor": 1.15,
+      "maxLaunchDelaySeconds": 3600,
+      "container": null,
+      "healthChecks": [],
+      "readinessChecks": [],
+      "dependencies": [],
+      "upgradeStrategy": {
+        "minimumHealthCapacity": 1,
+        "maximumOverCapacity": 1
+      },
+      "labels": {},
+      "ipAddress": null,
+      "version": "2017-09-01T14:26:11.831Z",
+      "residency": null,
+      "secrets": {},
+      "taskKillGracePeriodSeconds": null,
+      "unreachableStrategy": {
+        "inactiveAfterSeconds": 300,
+        "expungeAfterSeconds": 600
+      },
+      "killSelection": "YOUNGEST_FIRST",
+      "ports": [
+        10004
+      ],
+      "portDefinitions": [
+        {
+          "port": 10004,
+          "protocol": "tcp",
+          "labels": {}
+        }
+      ],
+      "requirePorts": false,
+      "versionInfo": {
+        "lastScalingAt": "2017-09-01T14:26:11.831Z",
+        "lastConfigChangeAt": "2017-09-01T14:26:11.831Z"
+      },
+      "tasksStaged": 0,
+      "tasksRunning": 1,
+      "tasksHealthy": 0,
+      "tasksUnhealthy": 0,
+      "deployments": []
+    },
+    {
+      "id": "/greent",
+      "cmd": "sudo su - evryscope -c \"set -e; set -x; hostname -i; sleep 5; whoami; if [ ! -d greent ]; then git clone git@github.com:NCATS-Tangerine/greent.git; fi;  tree greent; . /projects/stars/venv3/bin/activate; pip install -r greent/greent/requirements.txt; cd greent; which python;  PYTHONPATH=$PWD python -m greent.app\"",
+      "args": null,
+      "user": null,
+      "env": {},
+      "instances": 1,
+      "cpus": 1,
+      "mem": 128,
+      "disk": 0,
+      "gpus": 0,
+      "executor": "",
+      "constraints": [],
+      "uris": [],
+      "fetch": [],
+      "storeUrls": [],
+      "backoffSeconds": 1,
+      "backoffFactor": 1.15,
+      "maxLaunchDelaySeconds": 3600,
+      "container": null,
+      "healthChecks": [],
+      "readinessChecks": [],
+      "dependencies": [],
+      "upgradeStrategy": {
+        "minimumHealthCapacity": 1,
+        "maximumOverCapacity": 1
+      },
+      "labels": {},
+      "ipAddress": null,
+      "version": "2017-09-02T02:55:20.278Z",
+      "residency": null,
+      "secrets": {},
+      "taskKillGracePeriodSeconds": null,
+      "unreachableStrategy": {
+        "inactiveAfterSeconds": 300,
+        "expungeAfterSeconds": 600
+      },
+      "killSelection": "YOUNGEST_FIRST",
+      "ports": [
+        10001
+      ],
+      "portDefinitions": [
+        {
+          "port": 10001,
+          "protocol": "tcp",
+          "name": "5000",
+          "labels": {}
+        }
+      ],
+      "requirePorts": false,
+      "versionInfo": {
+        "lastScalingAt": "2017-09-02T02:55:20.278Z",
+        "lastConfigChangeAt": "2017-09-02T02:55:17.046Z"
+      },
+      "tasksStaged": 0,
+      "tasksRunning": 1,
+      "tasksHealthy": 0,
+      "tasksUnhealthy": 0,
+      "deployments": []
+    },
+    {
+      "id": "/zeppelin",
+      "cmd": "sudo su - evryscope -c /opt/zeppelin/bin/zeppelin.sh",
+      "args": null,
+      "user": null,
+      "env": {},
+      "instances": 1,
+      "cpus": 1,
+      "mem": 2048,
+      "disk": 0,
+      "gpus": 0,
+      "executor": "",
+      "constraints": [
+        [
+          "hostname",
+          "LIKE",
+          "stars-dw3.*"
+        ]
+      ],
+      "uris": [],
+      "fetch": [],
+      "storeUrls": [],
+      "backoffSeconds": 1,
+      "backoffFactor": 1.15,
+      "maxLaunchDelaySeconds": 3600,
+      "container": null,
+      "healthChecks": [],
+      "readinessChecks": [],
+      "dependencies": [],
+      "upgradeStrategy": {
+        "minimumHealthCapacity": 1,
+        "maximumOverCapacity": 1
+      },
+      "labels": {},
+      "ipAddress": null,
+      "version": "2017-09-04T14:55:44.791Z",
+      "residency": null,
+      "secrets": {},
+      "taskKillGracePeriodSeconds": null,
+      "unreachableStrategy": {
+        "inactiveAfterSeconds": 300,
+        "expungeAfterSeconds": 600
+      },
+      "killSelection": "YOUNGEST_FIRST",
+      "acceptedResourceRoles": [
+        "*"
+      ],
+      "ports": [
+        10000
+      ],
+      "portDefinitions": [
+        {
+          "port": 10000,
+          "protocol": "tcp",
+          "name": "8081",
+          "labels": {}
+        }
+      ],
+      "requirePorts": false,
+      "versionInfo": {
+        "lastScalingAt": "2017-09-04T14:55:44.791Z",
+        "lastConfigChangeAt": "2017-09-04T14:19:55.306Z"
+      },
+      "tasksStaged": 0,
+      "tasksRunning": 1,
+      "tasksHealthy": 0,
+      "tasksUnhealthy": 0,
+      "deployments": []
+    },
+    {
+      "id": "/blazegraph",
+      "cmd": "sudo su - evryscope -c \"MIN_MEM=5 MAX_MEM=5 /opt/blazegraph/bin/blazegraph.sh\"",
+      "args": null,
+      "user": null,
+      "env": {},
+      "instances": 1,
+      "cpus": 1,
+      "mem": 6000,
+      "disk": 0,
+      "gpus": 0,
+      "executor": "",
+      "constraints": [],
+      "uris": [],
+      "fetch": [],
+      "storeUrls": [],
+      "backoffSeconds": 1,
+      "backoffFactor": 1.15,
+      "maxLaunchDelaySeconds": 3600,
+      "container": null,
+      "healthChecks": [],
+      "readinessChecks": [],
+      "dependencies": [],
+      "upgradeStrategy": {
+        "minimumHealthCapacity": 1,
+        "maximumOverCapacity": 1
+      },
+      "labels": {},
+      "ipAddress": null,
+      "version": "2017-09-04T16:49:06.745Z",
+      "residency": null,
+      "secrets": {},
+      "taskKillGracePeriodSeconds": null,
+      "unreachableStrategy": {
+        "inactiveAfterSeconds": 300,
+        "expungeAfterSeconds": 600
+      },
+      "killSelection": "YOUNGEST_FIRST",
+      "acceptedResourceRoles": [
+        "*"
+      ],
+      "ports": [
+        10002
+      ],
+      "portDefinitions": [
+        {
+          "port": 10002,
+          "protocol": "tcp",
+          "name": "8899",
+          "labels": {}
+        }
+      ],
+      "requirePorts": false,
+      "versionInfo": {
+        "lastScalingAt": "2017-09-04T16:49:06.745Z",
+        "lastConfigChangeAt": "2017-09-04T16:48:48.740Z"
+      },
+      "tasksStaged": 0,
+      "tasksRunning": 1,
+      "tasksHealthy": 0,
+      "tasksUnhealthy": 0,
+      "deployments": []
+    }
+  ]
+}
