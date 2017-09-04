@@ -9,3 +9,4 @@
     - { role: mesos, tags: "mesos" }
     - { role: spark, spark_cache_dir: "/opt", tags: "spark" }
     - { role: zeppelin, tags: "zeppelin" }
+    - { role: blazegraph, tags: "blazegraph" }

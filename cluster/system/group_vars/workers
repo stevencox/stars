@@ -4,5 +4,8 @@ mesos_install_mode: "slave" # {master|slave|master-slave}
 spark_local_ip: "{{ ansible_default_ipv4.address }}"
 spark_python_virtual_env: /projects/stars/venv3
 
-zeppelin_service_username: "evryscope"
-zeppelin_service_group: "service accounts"
+zeppelin_service_username: "{{ stars_user }}"
+zeppelin_service_group: "{{ stars_group }}"
+
+blazegraph_service_username: "{{ stars_user }}"
+blazegraph_service_group: "{{ stars_group }}"

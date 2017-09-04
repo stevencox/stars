@@ -3,17 +3,22 @@
 java_variant: "jdk8"
 java_edition: "jdk"
 java_version: "8"
-java_update: "112"
+java_update: "144"
 java_build: "15"
 
+app_root: '/opt'
+tmp_root: '/tmp'
 
-mesos_version: "1.3.0"
+mesos_version: "1.3.1"
 spark_version: "2.1.1"
+
 spark_cache_dir: "/opt"
 
 mesos_zookeeper_masters: "zk://{{ groups['masters'] |join(':2181,') }}:2181/mesos"
 mesos_masters: "mesos://{{ groups['masters'] |join(':2181,') }}:2181/mesos"
-stars: true
 
+stars: true
+stars_user: "evryscope"
+stars_group: "service accounts"
 renci_ad_password: "{{ vault_renci_ad_password }}"
 
