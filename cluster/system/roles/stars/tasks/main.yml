@@ -4,9 +4,27 @@
     path: "{{ zeppelin_home_dir }}/conf"
     state: directory
     owner: "{{ ansible_user }}"
+
+- file:
+    path: "{{ zeppelin_home_dir }}/logs"
+    state: directory
+    owner: "{{ ansible_user }}"
     
 - name: Create zeppelin environment file
   template: src=zeppelin-env.sh.j2 dest={{ zeppelin_home_dir }}/conf/zeppelin-env.sh
 
 - name: Create zeppelin security file
   template: src=shiro.ini.j2 dest={{ zeppelin_home_dir }}/conf/shiro.ini
+
+#- name: Create zeppelin config...
+#  template: src=zeppelin/log4j.properties.j2 dest={{ zeppelin_home_dir }}/conf/log4j.properties
+- name: Copy zeppelin config...
+  copy:
+    src: "{{ role_path }}/templates/zeppelin/log4j.properties.j2"
+    dest: "{{ zeppelin_home_dir }}/conf/log4j.properties"
+
+- name: Create zeppelin config...
+  template: src=zeppelin/interpreter-list.j2 dest={{ zeppelin_home_dir }}/conf/interpreter-list
+
+- name: Create zeppelin config...
+  template: src=zeppelin/configuration.xsl.j2 dest={{ zeppelin_home_dir }}/conf/configuration.xsl

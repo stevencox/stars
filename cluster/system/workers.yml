@@ -8,4 +8,4 @@
     - common
     - { role: mesos, tags: "mesos" }
     - { role: spark, spark_cache_dir: "/opt", tags: "spark" }
-    - { role: stars, tags: "stars" }
+    - { role: zeppelin, tags: "zeppelin" }

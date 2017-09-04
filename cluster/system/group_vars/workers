@@ -1,3 +1,8 @@
 # here we assign variables to particular groups
 
 mesos_install_mode: "slave" # {master|slave|master-slave}
+spark_local_ip: "{{ ansible_default_ipv4.address }}"
+spark_python_virtual_env: /projects/stars/venv3
+
+zeppelin_service_username: "evryscope"
+zeppelin_service_group: "service accounts"
