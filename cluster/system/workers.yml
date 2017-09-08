@@ -6,6 +6,7 @@
   become_user: root
   roles:
     - common
+    - { role: python,    tags: "python" }
     - { role: mesos, tags: "mesos" }
     - { role: spark, spark_cache_dir: "/opt", tags: "spark" }
     - { role: zeppelin, tags: "zeppelin" }

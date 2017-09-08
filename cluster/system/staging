@@ -1,5 +1,18 @@
-# A place to put your stage hosts
-# Examples:
-# 
-# localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python2.7 
-# beowolf.example.com ansible_ssh_user=root
+# file: production
+
+[webservers]
+stars-stage.renci.org
+
+[masters]
+stars-dc0.edc.renci.org
+stars-dc1.edc.renci.org
+stars-dc2.edc.renci.org
+
+[workers]
+stars-dw0.edc.renci.org
+stars-dw1.edc.renci.org
+stars-dw2.edc.renci.org
+stars-dw3.edc.renci.org
+
+[ci]
+stars-dc0.edc.renci.org

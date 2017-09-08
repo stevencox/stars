@@ -1,7 +1,11 @@
 ---
 # file: webservers.yml
 - hosts: webservers
+  user: evryscope
+  become: true 
+  become_user: root
   roles:
     - common
+    - { role: python,    tags: "python" }
     - nginx
 

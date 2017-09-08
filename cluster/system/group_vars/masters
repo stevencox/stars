@@ -43,3 +43,5 @@ mesos_dns_ver: 'v0.6.0'
 spark_cache_dir: "/opt"
 spark_local_ip: "{{ ansible_default_ipv4.address }}"
 spark_python_virtual_env: "/projects/stars/venv3"
+
+jenkins_http_port: 8081

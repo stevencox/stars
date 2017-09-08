@@ -6,8 +6,10 @@ java_version: "8"
 java_update: "112"
 java_build: "15"
 
-app_root: '/opt'
-tmp_root: '/tmp'
+app_root: "/opt"
+tmp_root: "/tmp"
+share_root: "/projects/stars"
+share_data: "{{ share_root }}/var/app"
 
 mesos_version: "1.3.0"
 spark_version: "2.1.1"
@@ -22,3 +24,4 @@ stars_user: "evryscope"
 stars_group: "service accounts"
 renci_ad_password: "{{ vault_renci_ad_password }}"
 
+python3_version: 3.6.2
