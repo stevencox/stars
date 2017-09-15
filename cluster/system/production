@@ -1,18 +1,20 @@
 # file: production
 
-[webservers]
-stars-stage.renci.org
+#[webservers]
+#stars.renci.org
 
 [masters]
-stars-dc0.edc.renci.org
-stars-dc1.edc.renci.org
-stars-dc2.edc.renci.org
+stars-c0.edc.renci.org
+stars-c1.edc.renci.org
+#stars-c2.edc.renci.org  # doesn't exist yet.
 
 [workers]
-stars-dw0.edc.renci.org
-stars-dw1.edc.renci.org
-stars-dw2.edc.renci.org
-stars-dw3.edc.renci.org
+stars-c2.edc.renci.org
+stars-c3.edc.renci.org
+stars-c4.edc.renci.org
+stars-c5.edc.renci.org
+stars-c6.edc.renci.org
+stars-c7.edc.renci.org
 
-[ci]
-stars-dc0.edc.renci.org
+#[ci]
+#stars-dc0.edc.renci.org

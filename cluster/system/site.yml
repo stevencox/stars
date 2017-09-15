@@ -11,9 +11,7 @@
     - docker
     - { role: maven, tags: "maven" }
     - { role: java-se, java_variant: jre8, tags: "java" }
-#    - { role: maven, maven_proxies: [ { host : gateway.ad.renci.org, port: 8080 } ] }
-#    - { role: java-se, java_variant: jre8, tags: "java" }
 
 - include: masters.yml
 - include: workers.yml
-- include: webservers.yml
+#- include: webservers.yml
