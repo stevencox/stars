@@ -18,6 +18,8 @@ mesos_owner: root
 mesos_group: root
 stars: true
 
+zookeeper_hosts: "{{ groups['masters'] }}"
+
 # Containerizer
 mesos_containerizers: "docker,mesos"
 mesos_executor_timeout: "5mins"

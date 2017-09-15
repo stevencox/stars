@@ -8,8 +8,10 @@ cd system
 # how to fork from a clone: https://gist.github.com/jagregory/710671
 
 # common
+[ ! -d roles/python  ] && git clone git@github.com:stevencox/ansible-role-python.git roles/python
 [ ! -d roles/docker  ] && git clone git@github.com:stevencox/ansible-docker.git roles/docker
 [ ! -d roles/maven   ] && git clone git@github.com:jdauphant/ansible-role-maven.git roles/maven
+[ ! -d roles/nodejs  ] && git clone git@github.com:geerlingguy/ansible-role-nodejs.git roles/nodejs
 
 # core
 [ ! -d roles/zookeeper ] && git clone git@github.com:stevencox/ansible-zookeeper.git roles/zookeeper
@@ -18,15 +20,16 @@ cd system
 [ ! -d roles/mesos-dns ] && git clone git@github.com:stevencox/ansible-mesos-dns.git roles/mesos-dns
 
 # apps
+[ ! -d roles/nvm        ] && git clone git@github.com:pablocrivella/ansible-role-nvm.git roles/nvm
 [ ! -d roles/java-se    ] && git clone git@github.com:stevencox/ansible-java-se.git roles/java-se 
 [ ! -d roles/localrepo  ] && git clone git@github.com:jeffhung/ansible-localrepo.git roles/localrepo
 [ ! -d roles/jenkins    ] && git clone git@github.com:geerlingguy/ansible-role-jenkins.git roles/jenkins
 [ ! -d roles/spark      ] && git clone git@github.com:stevencox/ansible-spark.git roles/spark
+[ ! -d roles/livy       ] && git clone git@github.com:stevencox/ansible-role-livy.git roles/livy
 [ ! -d roles/zeppelin   ] && git clone git@github.com:stevencox/ansible-role-zeppelin.git roles/zeppelin
 [ ! -d roles/blazegraph ] && git clone git@github.com:stevencox/ansible-blazegraph.git roles/blazegraph
 
 # web
-# https://github.com/jdauphant/ansible-role-nginx
 [ ! -d roles/nginx ] && git clone git@github.com:jdauphant/ansible-role-nginx.git roles/nginx
 
 # https://www.ansible.com/blog/managing-vmware-guests

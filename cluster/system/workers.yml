@@ -3,7 +3,7 @@
 - hosts: workers
   user: evryscope
   become: true
-  become_user: root
+  become_user: "{{ stars_user }}" #root
   roles:
     - common
     - { role: python,    tags: "python" }
@@ -11,3 +11,6 @@
     - { role: spark, spark_cache_dir: "/opt", tags: "spark" }
     - { role: zeppelin, tags: "zeppelin" }
     - { role: blazegraph, tags: "blazegraph" }
+    - { role: livy, tags: "livy" }
+    - { role: nodejs, tags: "nodejs" }
+    - { role: lightning, tags: "lightning" }
