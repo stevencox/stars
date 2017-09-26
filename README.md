@@ -1,22 +1,75 @@
 # Stars
-Stars automates the installation and configuration of the software stack needed to run big data applications on the Berkeley Data Analytics Stack (BDAS)
 
-**Current Status**: Installs Java, Python, Maven, Docker, Zookeeper, Mesos, Marathon, and Chronos to a cluster. We still haven't settled on an orchestration approach so it's not ready for prime time. But Marathon can now pull, run, and scale docker images on Mesos.
+## What Is It?
 
-It installs common compiler and interpreter infrastructure including:
-- Java
-- Maven
-- Python3
+Stars automates data science stacks.
 
-It then installs distributed computing cluster infrastructure:
-- Apache Zookeeper
-- Apache Mesos
-- Mesosphere Marathon
-- AirBnB Chronos
-- Apache Mesos
-- Apache Zeppelin
+Stars' end game is to be able to compose data science stacks with predictability and reproducibility.
 
-The installation and configuration is automated with Ansible.
+Here, in overview form is a summary of the capabilities Stars includes and some of the systems it uses to achieve them:
+
+### **Applications**:
+
+* **Analytics**: Mapreduce, streaming, graph, machine learning, and SQL at scale.
+* **Notebooks**: Connect the best in notebook computing to enable scalability and collaboration.
+* **Visualization**: Service for generating visualizations suitable for embedding in data science notebooks.
+
+| System        | Version  |     Role      | Description                                  |
+| --------------|----------|---------------|----------------------------------------------|
+| Zeppelin      | 0.7.x    | Notebooks     | Collaborative notebook computing interface.  |
+| Ligthning     | 1.0.1    | Visualization | Lightweight visualization server.            |
+| Livy          | 0.4.0    | Notebooks     | Allows Jupyter Lab to connect to Spark.      |
+| Blazegraph    | 2.1.4    | Analytics     | RDF database and SPARQL endpoint.            |
+| Spark         | 1.2.2    | Analytics     | Mapreduce, Graph, ML, Streaming engine.      |
+
+### **Platform**
+
+* **Discovery**: Services are discovered and routed automatically via DNS.
+* **Services**: Long running services are managed with Marathon.
+* **Scheduler**: Scheduled tasks are managed with Chronos.
+* **Orchestration**: Delegate data center management to a scalable orchestrator like Mesos
+
+| System        | Version  |     Role      | Description                                  |
+| --------------|----------|---------------|----------------------------------------------|
+| Mesos-DNS     | 0.6.0    | Discovery     | DNS name resolution for launched contaiers.  |
+| Chronos       | 3.0.0    | Scheduler     | Scheduled hierarchical tasks for Mesos.      |
+| Marathon      | 1.4.7    | Services      | Long running service manager for Mesos.      |
+| Mesos         | 1.3.x    | Orchestration | Container orchestration and data center OS.  |
+| Zookeeper     | 3.4.6    | Configuration | Distributed configuration management.        |
+
+### **Tools**
+
+* **Languages/Compilers**: Suites of commonly used programming tools.
+
+| System        | Version  |     Role      | Description                                  |
+| --------------|----------|---------------|----------------------------------------------|
+| Java JDK      | 1.8.0    | Languages     | Required by many modern big data stacks.     |
+| Maven         | 3.3.9    | Languages     | Build and artifact management for Java.      |
+| Python        | 3.6      | Languages     | Among the most common data science languages.|
+
+### **DevOps**
+
+* **DevOps**: Automate core system architecture components with Ansible
+* **Containers**: Automate application level data science stacks with Docker and Ansible.
+
+| System        | Version  |     Role      | Description                                  |
+| --------------|----------|---------------|----------------------------------------------|
+| Docker        | 1.12.6   | Containers    | Compose, share custom machine environments.  |
+| Ansible       | 2.2.0.0  | Automation    | Automate infrastructure architecture.        |
+
+### **Cloud**
+
+Stars is going to the cloud. More on this soon.
+
+## How Do I Interact With It?
+
+Management of services within the container orchestrator uses Marathon. The interface makes it easy to control resource allocation to applications including CPUs, memory, and number of instances. It also takes care of restarting failed instances, supports Docker containers, and several sophisticated service deployment scenarios to support micro-services and continuous deployment.
+
+![Marathon UI](https://mesostars.files.wordpress.com/2017/09/marathon.png)
+
+The Mesos interface shows individual tasks started by frameworks. It also lets users navigate to each tasks' sandbox, or output area:
+
+![Mesos UI](https://mesostars.files.wordpress.com/2017/09/mesos1-3-0.png)
 
 ## Tools
 The Stars cluster module contains scripts for
