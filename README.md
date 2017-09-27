@@ -178,7 +178,8 @@ bin/compose
 ```
 2. **stars**: Deploy the entire system or individual components.
 ```
-bin/stars <host-role> <environment>
+cd system
+../bin/stars <host-role> <environment>
 eg: bin/stars workers staging
 eg: bin/stars masters staging
 eg: bin/stars site production
