@@ -75,7 +75,7 @@ Management of services within the container orchestrator uses Marathon. The inte
 
 ![Marathon UI](https://mesostars.files.wordpress.com/2017/09/marathon.png)
 
-The Mesos interface shows individual tasks started by frameworks. It also lets users navigate to each tasks' sandbox, or output area:
+The Mesos interface shows individual tasks started by frameworks. It also lets users navigate to each tasks' sandbox, or output area. That might not sound interesting but it's vital for troubleshooting. In the configuration below, there are three Mesos frameworks active: Marathon, Chronos, and Zeppelin. The majority of the listed tasks are long running services managed from Marathon. The tasks with numeric labels only are Spark jobs started by a Zeppelin notebook interpreter. 
 
 ![Mesos UI](https://mesostars.files.wordpress.com/2017/09/mesos1-3-0.png)
 
