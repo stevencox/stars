@@ -1,10 +1,21 @@
 #!/bin/bash
 
+#######################################
+## 
+## Backup Chronos and Marathon Jobs
+## using each one's public API.
+##
+#######################################
+
+set -e
+set -x
+
 # chronos
 mkdir -p conf/chronos
-wget -O- http://stars-dw2.edc.renci.org:4400/v1/scheduler/jobs | jq '.' > conf/chronos/jobs.json
+wget --quiet -O- http://stars-app.renci.org/chronos/v1/scheduler/jobs | jq '.' > conf/chronos/jobs.json
 
 # marathon
 mkdir -p conf/marathon
-wget -q -O- http://stars-dc0.edc.renci.org:8080/v2/apps | jq '.' > conf/marathon/apps.json
+wget --quiet -O- http://stars-app.renci.org/marathon/v2/apps | jq '.' > conf/marathon/apps.json
 
+exit 0

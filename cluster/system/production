@@ -4,17 +4,11 @@
 #stars.renci.org
 
 [masters]
-stars-c0.edc.renci.org
-stars-c1.edc.renci.org
-#stars-c2.edc.renci.org  # doesn't exist yet.
+stars-c[0:1].edc.renci.org
+#stars-c[0:2].edc.renci.org  # doesn't exist yet.
 
 [workers]
-stars-c2.edc.renci.org
-stars-c3.edc.renci.org
-stars-c4.edc.renci.org
-stars-c5.edc.renci.org
-stars-c6.edc.renci.org
-stars-c7.edc.renci.org
+stars-c[2:7].edc.renci.org
 
 #[ci]
-#stars-dc0.edc.renci.org
+#stars-ci.edc.renci.org # doesn't exist yet.

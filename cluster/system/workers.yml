@@ -3,7 +3,9 @@
 - hosts: workers
   user: evryscope
   become: true
-  become_user: "{{ stars_user }}" #root
+  become_user: "root" #"{{ stars_user }}" #root
+#  environment:
+#    http_proxy: http://gateway.ad.renci.org:8080/
   roles:
     - common
     - { role: python,    tags: "python" }
@@ -12,5 +14,5 @@
     - { role: zeppelin, tags: "zeppelin" }
     - { role: blazegraph, tags: "blazegraph" }
     - { role: livy, tags: "livy" }
-    - { role: nodejs, tags: "nodejs" }
-    - { role: lightning, tags: "lightning" }
+#    - { role: nodejs, tags: "nodejs" }
+#    - { role: lightning, tags: "lightning" }

@@ -1,0 +1,59 @@
+#!/bin/bash
+
+#set -e
+#set -x
+
+# usage: restart workers staging stop
+
+master_services="zookeeper mesos-master marathon mesos-dns"
+worker_services="docker mesos-slave"
+
+node_services () {
+    local tag=$1
+    local env=$2
+    local cmd=$3
+    if [ "$cmd" == "stop" ]; then
+	reverse
+    fi
+    services="$master_services"
+    if [ "$tag" == "dw" ]; then
+	services="$worker_services"
+    fi
+    for node in $(grep $tag $env); do
+	for service in ${services}; do
+	    echo $node
+	    echo sudo systemctl enable ${service}.service
+	    sudo systemctl enable ${service}.service
+	    echo sudo service $service $cmd
+	    sudo service $service $cmd
+	done
+    done
+}
+node_cmd () {
+    local env=$2
+    local cmd=$3
+    for node in $(grep $tag $env); do
+	$cmd
+    done
+}
+reverse () {
+    master_services="$(echo $master_services | tr ' ' '\n'| tac)"
+    worker_services="$(echo $worker_services | tr ' ' '\n'| tac)"
+}
+
+masters () {
+    node_services dc $*
+}
+workers () {
+    node_services dw $*
+}
+
+restart () {
+    local env=$1
+    masters $env stop
+    workers $env stop
+    masters $env start
+    workers $env start
+}
+
+$*

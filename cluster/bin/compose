@@ -1,11 +1,18 @@
 #!/bin/bash
 
+#######################################
+##
+## Compose and Ansible playbook from
+## GitHub repositories.
+##
+#######################################
+
 set -x
 set -e
 
 cd system
 
-# how to fork from a clone: https://gist.github.com/jagregory/710671
+# fork from a clone: https://gist.github.com/jagregory/710671
 
 # common
 [ ! -d roles/python  ] && git clone git@github.com:stevencox/ansible-role-python.git roles/python
@@ -32,4 +39,4 @@ cd system
 # web
 [ ! -d roles/nginx ] && git clone git@github.com:jdauphant/ansible-role-nginx.git roles/nginx
 
-# https://www.ansible.com/blog/managing-vmware-guests
+exit 0
