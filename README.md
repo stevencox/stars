@@ -177,13 +177,20 @@ You'll have a toolkit like this:
 bin/compose
 ```
 2. **stars**: Deploy the entire system or individual components.
-```
-cd system
-../bin/stars <host-role> <environment>
-eg: bin/stars workers staging
-eg: bin/stars masters staging
-eg: bin/stars site production
-```
+   * In general:
+      ```
+      cd system
+      ../bin/stars <host-role> <environment>
+      ```
+   * Deploy system segments:
+      ```
+      ../bin/stars workers staging
+      ../bin/stars masters staging
+      ```
+   * Deploy the entire system to an environment:
+      ```
+      ../bin/stars site production
+      ```
 3. **backup**: Backup apps and tasks from Marathon and Chronos. Will create conf directory in $PWD.
 ```
 bin/backup
