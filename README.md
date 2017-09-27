@@ -108,8 +108,8 @@ Stars has been tested on CentOS 7.
 ### Structure
 
 1. **Vault**: Create an Ansible vault to hold secrets:
-* Follow instructions here to [create a vault](http://docs.ansible.com/ansible/latest/playbooks_vault.html)
-* Be sure to name the vault password file **~/.vault_password.txt** 
+   * Follow instructions here to [create a vault](http://docs.ansible.com/ansible/latest/playbooks_vault.html)
+   * Be sure to name the vault password file **~/.vault_password.txt** 
 2. **Variables**: Set variables appropriately for each machine role in cluster/system/group_vars
 3. **Staging**: Add staging machines to cluster/system/staging
 4. **Production**: Add production machines to cluster/system/production
