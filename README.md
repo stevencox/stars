@@ -4,13 +4,15 @@
 
 Stars automates data science stacks.
 
-Stars' end game is to be able to compose data science stacks with predictability and reproducibility.
+Stars' end game is composing scalable data science stacks with predictability and reproducibility.
 
-Here, in overview form is a summary of the capabilities Stars includes and some of the systems it uses to achieve them:
+What follows is an overview introducing Stars' capabilities. Each section also lists, by way of example, specific components and their roles in achieving the system's overall goals.
 
 ### **Applications**:
 
-* **Analytics**: Mapreduce, streaming, graph, machine learning, and SQL at scale.
+Stars is used to deliver best in class data science solutions. It has been used in multiple federally funded research projects for several years. Our team does semantic web analytics using graph databases like Blazegraph in the bioinformatics domain. We've used Spark to parallelize generation of Gensim word2vec models over a corpus of medical literature. We share computing notebooks via Zeppelin with collaborators at federal agencies and other partner institutions. To do this work, we use:
+
+* **Analytics**: Mapreduce, streaming, graph, machine learning, and SQL at scale. 
 * **Notebooks**: Connect the best in notebook computing to enable scalability and collaboration.
 * **Visualization**: Service for generating visualizations suitable for embedding in data science notebooks.
 
@@ -23,6 +25,8 @@ Here, in overview form is a summary of the capabilities Stars includes and some 
 | Spark         | 1.2.2    | Analytics     | Mapreduce, Graph, ML, Streaming engine.      |
 
 ### **Platform**
+
+Underlying applications is a highly scalable container orchestration platform with support for long running tasks, scheduled jobs, and support of dynamic service discovery.
 
 * **Discovery**: Services are discovered and routed automatically via DNS.
 * **Services**: Long running services are managed with Marathon.
@@ -39,6 +43,8 @@ Here, in overview form is a summary of the capabilities Stars includes and some 
 
 ### **Tools**
 
+For all of this to be useful, there need to be programming tools. We have found a small set adequate for the needs of the communities we work with but will soon be adding more. Scala and R are top of the list.
+
 * **Languages/Compilers**: Suites of commonly used programming tools.
 
 | System        | Version  |     Role      | Description                                  |
@@ -48,6 +54,8 @@ Here, in overview form is a summary of the capabilities Stars includes and some 
 | Python        | 3.6      | Languages     | Among the most common data science languages.|
 
 ### **DevOps**
+
+DevOps is the merger of software development and operations. We will make infrastructure code. We now manage the entire architecture of Stars as repeatable rules encoded in software.
 
 * **DevOps**: Automate core system architecture components with Ansible
 * **Containers**: Automate application level data science stacks with Docker and Ansible.
@@ -71,101 +79,115 @@ The Mesos interface shows individual tasks started by frameworks. It also lets u
 
 ![Mesos UI](https://mesostars.files.wordpress.com/2017/09/mesos1-3-0.png)
 
-## Tools
-The Stars cluster module contains scripts for
-- Assembling required Ansible roles
-- Executing those roles
-- Currently, we have to run some additional, non-Ansible configuration
-  - This will be generalized via Ansible
+## Usage
 
-In the structure:
-```
-.
-├── bin
-│   ├── clone-roles
-│   ├── connect
-│   └── diff-repos
-├── conf
-│   ├── marathon
-│   │   └── marathon.service
-│   ├── mesos
-│   │   ├── mesos-master.service
-│   │   ├── mesos-master.service.0
-│   │   ├── mesos-master.service.1
-│   │   └── mesos-slave.service
-│   └── zookeeper
-│       └── zoo.cfg
-```
-The bin directory contains scripts to:
-- clone-roles: Clone GitHub repos containing needed roles.
-- connect: Non-Ansible managed configurations.
-- diff-repos: Tool for diffing roles from cloned repos.
+### Get the Code
 
-## Running
-
-1. **Clone Roles** There are a few roles that are in the cluster module itself. They include the common role and, currently, the mesos-dns roles. Others are assembled from external GitHub repos by the clone-roels script.
-To clone github repositories containing ansible roles we depend on, execute:
+Get the code...
 
 ```
-bin/clone-roles
+pip install ansible=2.2.0.0
+git clone git@github.com:stevencox/stars.git
+cd stars/cluster/system
 ```
+## Configuration
 
-When that's done, you should have a directory structure like this:
+### Provisioning Compute and Storage Infrastructure
+
+At this point you'll want to provision some master nodes and some workers.
+
+Three masters is a good number for an HA system. Zookeeper uses a protocol that requires a concensus so there are numbers of machines that just don't make a lot of sense. One is fine for testing. Three is good for production.
+
+The number of workers is entirely up to your usage scenario.
+It's a good idea to:
+* Make the /var partition 50GB or greater. Docker uses this as its storage.
+* Launch docker containers with the "--rm" option to remove containers.
+
+Stars has been tested on CentOS 7.
+
+### Structure
+
+1. **Vault**: Create an Ansible vault to hold secrets:
+* Follow instructions here to [create a vault](http://docs.ansible.com/ansible/latest/playbooks_vault.html)
+* Be sure to name the vault password file **~/.vault_password.txt** 
+2. **Variables**: Set variables appropriately for each machine role in cluster/system/group_vars
+3. **Staging**: Add staging machines to cluster/system/staging
+4. **Production**: Add production machines to cluster/system/production
+
 ```
 └── system
+    ├── ci.yml
+    ├── conf
+    │   ├── chronos
+    │   └── marathon
     ├── group_vars
     │   ├── all
-    │   ├── master
+    │   ├── ci
+    │   ├── masters
     │   └── workers
     ├── host_vars
-    │   ├── hostname1
-    │   ├── stars-dc0.edc.renci.org
-    │   └── stars-dc1.edc.renci.org
-    ├── log.txt
-    ├── masters.retry
+    │   └── hostname1
     ├── masters.yml
     ├── production
     ├── README.md
-    ├── repo-diffs.txt
     ├── roles
-    │   ├── chronos
+    │   ├── blazegraph
     │   ├── common
     │   ├── docker
+    │   ├── java-se
     │   ├── jeffhung.java-se
     │   ├── jeffhung.localrepo
+    │   ├── jenkins
+    │   ├── lightning
+    │   ├── livy
+    │   ├── localrepo
     │   ├── marathon
     │   ├── maven
     │   ├── mesos
-    │   ├── mesos-dns-client
-    │   ├── mesos-dns-server
+    │   ├── mesos-dns
     │   ├── nginx
+    │   ├── python
     │   ├── spark
+    │   ├── stars
     │   ├── zeppelin
     │   └── zookeeper
-    ├── site.retry
     ├── site.yml
     ├── staging
     ├── webservers.yml
-    ├── workers.yml
-    └── zookeeper.yml
-```
-2. **Masters**: Run the Ansible playbook to install and configure masters:
-```
-ansible-playbook masters.yml -i production --limit masters
+    ├── workers.retry
+    └── workers.yml
 ```
 
-3. **Workers**: Configure Mesos workers
+## Running
+
+You'll have a toolkit like this:
+
 ```
-ansible-playbook workers.yml -i production --limit workers
+├── bin
+│   ├── backup
+│   ├── compose
+│   ├── nuke-docker
+│   ├── restart
+│   ├── run
+│   └── stars
 ```
 
-4. **Webservers**: Configure webservers
+1. **compose**: Clone Ansible roles to create a playbook. This will be configurable in the future.
 ```
-ansible-playbook webservers.yml -i production --limit webservers
+bin/compose
 ```
+2. **stars**: Deploy the entire system or individual components.
+```
+bin/stars <host-role> <environment>
+eg: bin/stars workers staging
+eg: bin/stars masters staging
+eg: bin/stars site production
+```
+3. **backup**: Backup apps and tasks from Marathon and Chronos. Will create conf directory in $PWD.
+```
+bin/backup
+```
+4. **restart**: Restart services.
 
-5. **Connect**: Until we integrate these changes into Ansible roles, we run a script that configures a few specific things:
-```
-bin/connect
-```
+
 
