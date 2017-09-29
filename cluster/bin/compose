@@ -24,6 +24,7 @@ cd system
 [ ! -d roles/zookeeper ] && git clone git@github.com:stevencox/ansible-zookeeper.git roles/zookeeper
 [ ! -d roles/mesos     ] && git clone git@github.com:stevencox/ansible-mesos.git roles/mesos
 [ ! -d roles/marathon  ] && git clone git@github.com:stevencox/ansible-marathon.git roles/marathon
+[ ! -d roles/chronos   ] && git clone git@github.com:stevencox/ansible-chronos.git roles/chronos
 [ ! -d roles/mesos-dns ] && git clone git@github.com:stevencox/ansible-mesos-dns.git roles/mesos-dns
 
 # apps

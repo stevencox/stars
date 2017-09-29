@@ -24,6 +24,7 @@ zookeeper_hosts: "{{ groups['masters'] }}"
 mesos_containerizers: "docker,mesos"
 mesos_executor_timeout: "5mins"
 mesos_zookeeper_masters: "zk://{{ groups['masters'] |join(':2181,') }}:2181/mesos"
+zookeeper_force_myid: true
 
 # SSL
 mesos_ssl_enabled: false

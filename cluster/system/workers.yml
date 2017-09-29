@@ -8,11 +8,13 @@
 #    http_proxy: http://gateway.ad.renci.org:8080/
   roles:
     - common
-    - { role: python,    tags: "python" }
-    - { role: mesos, tags: "mesos" }
-    - { role: spark, spark_cache_dir: "/opt", tags: "spark" }
-    - { role: zeppelin, tags: "zeppelin" }
+    - { role: python,     tags: "python" }
+    - { role: chronos,    tags: "chronos" }
+    - { role: mesos,      tags: "mesos" }
+    - { role: spark,      spark_cache_dir: "/opt", tags: "spark" }
+    - { role: zeppelin,   tags: "zeppelin" }
     - { role: blazegraph, tags: "blazegraph" }
-    - { role: livy, tags: "livy" }
+    - { role: livy,       tags: "livy" }
+
 #    - { role: nodejs, tags: "nodejs" }
 #    - { role: lightning, tags: "lightning" }
