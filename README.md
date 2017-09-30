@@ -1,5 +1,5 @@
 # Stars
-![Stars](https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwiLuNO748vWAhXMRyYKHQEoB58QjRwIBw&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FStar&psig=AOvVaw16-_z3VAuDNeXwgyqbqrVT&ust=1506821979205842)
+![Stars](https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Starsinthesky.jpg/2560px-Starsinthesky.jpg)
 
 ## What Is It?
 
