@@ -1,4 +1,5 @@
 # Stars
+![Stars](https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Starsinthesky.jpg/2560px-Starsinthesky.jpg)
 
 ## What Is It?
 
