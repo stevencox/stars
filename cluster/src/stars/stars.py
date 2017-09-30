@@ -190,6 +190,22 @@ class Scheduler (object):
     def run (self, job_id):
         logger.debug ("Running job %s", job_id)
         self.client.run (job_id)
+    def add_job (self, name, command, owner, schedule=None, disabled=True,
+                 epsilon='PT15M', async=False, parents=None):
+        assert schedule is not None or parents is not None #, "Either schedule or parents must be specified to create a Chronos job."
+        job_def ={
+            'async'    : async,
+            'command'  : command,
+            'epsilon'  : epsilon,
+            'name'     : name,
+            'owner'    : owner,
+            'disabled' : disabled
+        }
+        if schedule:
+            job_def['schedule'] = schedule
+        elif parents:
+            job_def['parents'] = parents
+        self.client.add (job_def)
 
 class System (object):
     def __init__(self, services_endpoints, scheduler_endpoints, vault_password_file):
@@ -198,7 +214,7 @@ class System (object):
         self.automator = Automator (play_name="RENCI_Stars_Auto", vault_password_file=vault_password_file)
 
 class Stars (System):
-    def __init__(self, services_endpoints, scheduler_endpoints, vault_password_file):
+    def __init__(self, services_endpoints, scheduler_endpoints, vault_password_file=None):
         super (Stars, self).__init__(services_endpoints, scheduler_endpoints, vault_password_file)
         self.services = {
             'masters' : [ "mesos-dns", "marathon", "mesos-master", "zookeeper" ],
@@ -245,23 +261,14 @@ def main ():
                                   command=args.cmd)
 #main ()
 
+'''
 config = Configuration ('stars-dc0.edc.renci.org:2181,stars-dc1.edc.renci.org:2181,stars-dc2.edc.renci.org:2181')
-#pprint (config.listr ('marathon'))
-
 config.rmr (".*auto$")
 for k in config.listr ("/"):
     print ("  {0}".format (k))
 for k in config.listr ("/", pattern=".*auto$"):
     print ("(l)  {0}".format (k))
-
-
-def pretty(d, indent=0):
-   for key, value in d.items():
-      print('\t' * indent + str(key))
-      if isinstance(value, dict):
-         pretty(value, indent+1)
-      else:
-         print('\t' * (indent+1) + str(value))
+'''
 
 # python ../bin/restore.py --run --hosts workers --env staging --cmd "sudo service docker status"
 
