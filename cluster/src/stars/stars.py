@@ -190,22 +190,26 @@ class Scheduler (object):
     def run (self, job_id):
         logger.debug ("Running job %s", job_id)
         self.client.run (job_id)
-    def add_job (self, name, command, owner, schedule=None, disabled=True,
-                 epsilon='PT15M', async=False, parents=None):
-        assert schedule is not None or parents is not None #, "Either schedule or parents must be specified to create a Chronos job."
+    def add_job (self, name, command, owner, runAsUser='root', schedule=None, disabled=False,
+                 epsilon='PT15M', async=False, parents=None, constraints=[], execute_now=False):
+        assert schedule is not None or parents is not None
         job_def ={
-            'async'    : async,
-            'command'  : command,
-            'epsilon'  : epsilon,
-            'name'     : name,
-            'owner'    : owner,
-            'disabled' : disabled
+            'name'        : name,
+            'command'     : command,
+            'owner'       : owner,
+            'async'       : async,
+            'epsilon'     : epsilon,
+            'disabled'    : disabled,
+            'runAsUser'   : runAsUser,
+            'constraints' : constraints
         }
         if schedule:
             job_def['schedule'] = schedule
         elif parents:
             job_def['parents'] = parents
         self.client.add (job_def)
+        if execute_now:
+            self.client.run (name)
 
 class System (object):
     def __init__(self, services_endpoints, scheduler_endpoints, vault_password_file):
