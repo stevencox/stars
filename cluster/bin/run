@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#set -x
+set -e
+
+group=$1; shift
+env=$1; shift
+
+if [ ! -z "$group" -a ! -z "$env" ]; then
+    echo ansible $group -i $env --vault-password-file ~/.vault_password.txt -a "$*"
+    ansible $group -i $env --vault-password-file ~/.vault_password.txt -a "$*" -f 3
+fi
+
+exit 0

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+rcmd () {
+    ssh stars-dw$c.edc.renci.org "$1"
+}
+
+for c in $(seq 0 3); do
+    echo $c
+    rcmd "sudo systemctl disable docker"
+    rcmd "sudo service docker stop"
+    rcmd "sudo yum remove -y docker"
+    rcmd "sudo rm -rf /var/lib/docker/*"
+    rcmd "sudo yum install -y docker"
+    rcmd "sudo systemctl enable docker"
+    rcmd "sudo service docker start"
+    rcmd "sudo service docker status"
+done
+
+
+
+    

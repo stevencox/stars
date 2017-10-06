@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+play=$1; shift
+env=$1; shift
+
+if [ ! -z "$play" -a ! -z "$env" ]; then
+    ansible-playbook ${play}.yml -i $env --vault-password-file ~/.vault_password.txt $*
+fi
+
+exit 0
