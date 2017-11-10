@@ -2,6 +2,5 @@
 setup.cfg
 setup.py
 stars/__init__.py
-stars/data_commons.py
 stars/requirements.txt
 stars/stars.py
