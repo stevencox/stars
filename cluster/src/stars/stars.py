@@ -89,7 +89,7 @@ class Automator (object):
             ]
         )
         play = Play().load(play_source, variable_manager=variable_manager, loader=loader)
-        
+
         # actually run it
         tqm = None
         try:
@@ -111,7 +111,7 @@ class Configuration (object):
     # https://kazoo.readthedocs.io/en/latest/index.html
     def __init__(self, zookeeper_hosts):
         self.zookeeper_hosts = zookeeper_hosts
-        self.zk = KazooClient(hosts=self.zookeeper_hosts) 
+        self.zk = KazooClient(hosts=self.zookeeper_hosts)
         self.zk.start ()
     def listr (self, path, pattern=None, result=[]):
         children = self.zk.get_children (path)
@@ -191,7 +191,8 @@ class Scheduler (object):
         logger.debug ("Running job %s", job_id)
         self.client.run (job_id)
     def add_job (self, name, command, owner, runAsUser='root', schedule=None, disabled=False,
-                 epsilon='PT15M', async=False, parents=None, constraints=[], execute_now=False):
+                 epsilon='PT15M', async=False, parents=None, constraints=[], execute_now=False,
+                 container=None, shell=False):
         assert schedule is not None or parents is not None
         job_def ={
             'name'        : name,
@@ -201,8 +202,11 @@ class Scheduler (object):
             'epsilon'     : epsilon,
             'disabled'    : disabled,
             'runAsUser'   : runAsUser,
-            'constraints' : constraints
+            'constraints' : constraints,
+            'shell'       : shell
         }
+        if container:
+            job_def['container'] = container
         if schedule:
             job_def['schedule'] = schedule
         elif parents:
@@ -230,7 +234,7 @@ class Stars (System):
             if cmd=='start':
                 services = reversed (services)
             for service in services:
-                self.automator.execute (hosts=hosts, environment=env, command="sudo service {0} {1}".format (service, cmd)) 
+                self.automator.execute (hosts=hosts, environment=env, command="sudo service {0} {1}".format (service, cmd))
 
 def x ():
     print ("services: {0}".format (list (map (lambda s : s.id, system.services.list ()))))
@@ -257,7 +261,7 @@ def main ():
         system.service (hosts=args.hosts,
                         env=args.env,
                         cmd=args.service)
-        
+
     elif args.cmd:
         system.automator.execute (hosts=args.hosts,
                                   environment=args.env,
@@ -275,6 +279,3 @@ for k in config.listr ("/", pattern=".*auto$"):
 '''
 
 # python ../bin/restore.py --run --hosts workers --env staging --cmd "sudo service docker status"
-
-
-
