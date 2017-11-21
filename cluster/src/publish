@@ -4,6 +4,11 @@ set -e
 
 version=$1
 
+if [ -z "$version" ]; then
+    echo version parameter is required
+    exit 0
+fi
+
 cat <<EOF > setup.py
 from distutils.core import setup
 from pip.req import parse_requirements
@@ -29,12 +34,6 @@ setup(
 EOF
 
 
-
-if [ -z "$version" ]; then
-    echo version parameter is required
-    exit 0
-fi
-
 publish () {
     set -x
     git tag
@@ -43,6 +42,7 @@ publish () {
         echo "No tag found for $version. Creating distribution."
         python setup.py sdist
         tar tf dist/stars-${version}.tar.gz
+        read -p "Press [enter] to continue with twine upload and git tagging"
         twine upload --skip-existing dist/stars-${version}.tar.gz
         touch publish
         git commit -am "api version $version"
